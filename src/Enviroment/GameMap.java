@@ -7,6 +7,7 @@
 package Enviroment;
 import java.awt.Point;
 import java.util.Map;
+import java.util.ArrayList;
 import Enviroment.EnvObjects.GameObject;
 
 /**
@@ -22,7 +23,7 @@ public class GameMap {
     private static final int DEFAULT_MAP_Y = 16;
     
     // GameMap parameters
-    Map<Integer,Chunk> chunks;
+    Map<Integer, Chunk> chunks;
     private int chunkSize;
     private int mapX;
     private int mapY;
@@ -76,11 +77,16 @@ public class GameMap {
     }  
     
     public void addGameObject(GameObject o, int x, int y) {
-        o.setPosition(null);
+        this.addGameObject(o, new Point(x, y));
     }
     
     public void addGameObject(GameObject o, Point p) {
         o.setPosition(p);
+        ArrayList<Point> vertexList = o.getVertices();
+        for (Point v : vertexList) {
+            Chunk c = this.getChunk(v);
+            
+        }
         this.getChunk(p).addSortObject(o);
     }
     

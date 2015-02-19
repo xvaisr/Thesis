@@ -52,8 +52,7 @@ public final class Shape {
         this.change = true; // set change flag, area needs to be computed again
         
         // translates vertex around midpoint
-        p.setLocation((p.getX() - this.midpoint.getX()),
-                      (p.getY() - this.midpoint.getY()));
+        p.translate(-this.midpoint.x, -this.midpoint.y);
         
         // creates coordinations for comparsion
         Coords c = new Coords(p);
@@ -73,6 +72,10 @@ public final class Shape {
                 return;
             }    
         }
+    }
+    
+    public boolean getChanged() {
+        return this.change;
     }
     
     public Point getMidpoint() {

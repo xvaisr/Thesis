@@ -33,20 +33,24 @@ public class GameObject extends Object {
     
     /* Constructors */
     public GameObject(EnumGameObjects type) {
-        this(type, 0, 0);
+        this(type, null, new Point());
     }
     
-    public GameObject(EnumGameObjects type, int x, int y) {
-        this(type, new Point(x, y));
+    public GameObject(EnumGameObjects type, GameMap map) {
+        this(type, map, new Point());
     }
     
-    public GameObject(EnumGameObjects type, Point p) {
+    public GameObject(EnumGameObjects type, GameMap map, int x, int y) {
+        this(type, map, new Point(x, y));
+    }
+    
+    public GameObject(EnumGameObjects type, GameMap map, Point p) {
         this.type = type;
         this.position = new Point(p);
         this.relPosition = new Point(p);
         this.vertices = null;
         this.shape = null;
-        this.map = null;
+        this.map = map;
     }
  
 /* General enviroment object related methods */
@@ -54,8 +58,8 @@ public class GameObject extends Object {
     public void setNewShape(Shape s) {
         this.shape = s;
         this.vertices.clear();
-        ArrayList<Point> vertexList = this.shape.getVertices();
-        
+        this.vertices.addAll(this.shape.getVertices());
+        this.translateVertices();
     }
     
     public Shape getShape() {
@@ -66,15 +70,60 @@ public class GameObject extends Object {
         return this.type;
     }
 
+    public boolean putIntoMap(int x, int y) {
+        if (this.map == null) return false;
+        this.map.addGameObject(this, x, y);
+        return true;
+    }
+    
+    public boolean putIntoMap(Point p) {
+        if (this.map == null) return false;
+        this.map.addGameObject(this, p);
+        return true;
+    }
+    
+    public boolean putIntoMap(int x, int y, GameMap map) {
+        if (this.map != null) return false;
+        this.map = map;
+        return this.putIntoMap(x, y);
+    }
+    
+    public boolean putIntoMap(Point p, GameMap map) {
+        if (this.map != null) return false;
+        this.map = map;
+        return this.putIntoMap(p);
+    }
+    
+    public ArrayList<Point> getVertices() {
+        ArrayList<Point> vertexList = new ArrayList();
+        for(Point p : this.vertices) {
+            vertexList.add(new Point(p));
+        }
+        return vertexList;
+    }
+    
+    private void translateVertices() {
+        if (this.shape.getChanged()) {
+            this.vertices.clear();
+            this.vertices.addAll(this.shape.getVertices());
+        }
+        for (Point p : this.vertices) {
+            p.translate(-this.position.x, -this.position.y);
+        }
+    }
+    
     public void setPosition(int x, int y) {
-        this.position.setLocation(x, y);
+        if (this.map == null) return;
+        this.setPosition(new Point(x, y));
     }
 
     public void setPosition(Point position) {
+        if (this.map == null) return;
         this.position.setLocation(position);
+        this.translateVertices();
     }
     
-    public void move() {
+    public void move(Point destination) {
     }
     
     public Point getPosition() {
@@ -86,7 +135,11 @@ public class GameObject extends Object {
     }
     
     public int getAreaSize() {
-        return 0;
+        return (int) Math.round(this.shape.getArea());
+    }
+    
+    public GameMap getMap() {
+        return this.map;
     }
     
 /* Sences related methods */    
