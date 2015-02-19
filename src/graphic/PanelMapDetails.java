@@ -9,7 +9,7 @@
  */
 package graphic;
 
-import Enviroment.Model;
+import Enviroment.Original.Model;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ComponentEvent;

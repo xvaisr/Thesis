@@ -11,8 +11,8 @@
 package graphic;
 
 import Agents.AgentInfo;
-import Enviroment.Model;
-import Enviroment.Resources;
+import Enviroment.Original.Model;
+import Enviroment.Original.Resources;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;

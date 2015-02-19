@@ -9,7 +9,7 @@
  */
 package graphic;
 
-import Enviroment.Model;
+import Enviroment.Original.Model;
 
 /**
  * Thread responsible for repainting the game screen

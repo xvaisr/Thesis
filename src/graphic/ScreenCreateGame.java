@@ -9,8 +9,8 @@
  */
 package graphic;
 
-import Enviroment.Model;
-import Enviroment.WorldsDatabase.Worlds;
+import Enviroment.Original.Model;
+import Enviroment.Original.WorldsDatabase.Worlds;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;

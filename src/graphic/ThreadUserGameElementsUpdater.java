@@ -10,8 +10,8 @@
 package graphic;
 
 import Agents.AgentInfo;
-import Enviroment.Model;
-import Enviroment.Resources;
+import Enviroment.Original.Model;
+import Enviroment.Original.Resources;
 import jason.asSemantics.Agent;
 
 import java.awt.Point;

@@ -9,9 +9,9 @@
  */
 package graphic;
 
-import Enviroment.Model;
+import Enviroment.Original.Model;
 import graphic.EnumTeams;
-import Enviroment.WorldsDatabase.Worlds;
+import Enviroment.Original.WorldsDatabase.Worlds;
 
 import java.awt.Color;
 import java.util.HashMap;

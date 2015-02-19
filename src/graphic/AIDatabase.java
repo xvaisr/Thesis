@@ -10,7 +10,7 @@
 
 package graphic;
 
-import Enviroment.Model;
+import Enviroment.Original.Model;
 
 /**
  * The AI database responsible for getting correct ASL source file

@@ -9,7 +9,7 @@
  */
 package graphic;
 
-import Enviroment.Model;
+import Enviroment.Original.Model;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;

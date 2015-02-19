@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,11 +6,13 @@
  */
 
 package Enviroment.EnvObjects;
+import Enviroment.EnvObjFeatures.Sence;
+import Enviroment.EnvObjFeatures.EnumSences;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Map;
 import Enviroment.EnvObjFeatures.*;
-import Agents.AgentTraits.*;
+import Enviroment.GameMap;
 
 /**
  *
@@ -18,13 +21,15 @@ import Agents.AgentTraits.*;
 public class GameObject extends Object {
     /* object inner variables */
     private final EnumGameObjects type;
-    private Point position;
-    private ArrayList<Point> vertexes;
+    private Point position;                     // integer positioning
+    private Point relPosition;                  // relative positionig  for GUI
+    private Shape shape;
+    private ArrayList<Point> vertices;      
+    private GameMap map;
     
     /* things affecting preception by sences */
     private Map <EnumSences, Sence> sences;
     private Map <EnumEmitors, Emitor> emitors;
-    private Map <String, Integer> traits;
     
     /* Constructors */
     public GameObject(EnumGameObjects type) {
@@ -32,29 +37,31 @@ public class GameObject extends Object {
     }
     
     public GameObject(EnumGameObjects type, int x, int y) {
+        this(type, new Point(x, y));
+    }
+    
+    public GameObject(EnumGameObjects type, Point p) {
         this.type = type;
-        this.position = new Point(x, y);
+        this.position = new Point(p);
+        this.relPosition = new Point(p);
+        this.vertices = null;
+        this.shape = null;
+        this.map = null;
     }
  
 /* General enviroment object related methods */
     
-    public void addVertex(int x, int y) {
-        this.addVertex(new Point(x, y));
+    public void setNewShape(Shape s) {
+        this.shape = s;
+        this.vertices.clear();
+        ArrayList<Point> vertexList = this.shape.getVertices();
+        
     }
     
-    public void addVertex(Point p) {
-        this.vertexes.add(p);
+    public Shape getShape() {
+        return this.shape;
     }
-    
-    public void setVertexes(ArrayList<Point> shape) {
-        this.vertexes.clear();
-        this.vertexes.addAll(shape);
-    }
-    
-    public ArrayList<Point> getVertexes() {
-        return vertexes;
-    }
-    
+        
     public EnumGameObjects getType() {
         return this.type;
     }
@@ -67,31 +74,28 @@ public class GameObject extends Object {
         this.position.setLocation(position);
     }
     
+    public void move() {
+    }
+    
     public Point getPosition() {
         return new Point(this.position);
     }
     
+    public Point getRelPosition() {
+        return new Point(this.relPosition);
+    }
+    
     public int getAreaSize() {
-        return 1;
-    }
-    
-    private void computeAreaSize() {
-    }
-    
-/* Agent related methods */
-    
-    public boolean getTrait(String trait) {
-        Integer value = this.traits.get(trait);
-        return value.intValue() != 0;
-    }
-    
-    public void setTrait(String trait, int value) {
-        this.traits.put(trait, value);
+        return 0;
     }
     
 /* Sences related methods */    
     
-    public boolean getSence(EnumSences type) {
+    public Sence getSence (EnumSences type) {
+        return this.sences.get(type);
+    }
+    
+    public boolean getHasSence(EnumSences type) {
         return this.sences.get(type) != null;
     }
     
@@ -116,4 +120,5 @@ public class GameObject extends Object {
     public void removeEmitor(EnumEmitors type) {
         this.emitors.remove(type);
     }
+    
 }

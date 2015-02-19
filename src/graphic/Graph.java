@@ -9,8 +9,8 @@
  */
 package graphic;
 
-import Enviroment.Model;
-import Enviroment.Resources;
+import Enviroment.Original.Model;
+import Enviroment.Original.Resources;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;

@@ -10,7 +10,7 @@
 
 package graphic;
 
-import Enviroment.Model;
+import Enviroment.Original.Model;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;

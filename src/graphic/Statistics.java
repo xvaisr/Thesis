@@ -9,7 +9,7 @@
  */
 package graphic;
 
-import Enviroment.Model;
+import Enviroment.Original.Model;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;

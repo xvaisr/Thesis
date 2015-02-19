@@ -4,7 +4,8 @@
  * and open the template in the editor.
  */
 
-package Agents.AgentTraits;
+package Enviroment.EnvObjFeatures;
+import Enviroment.EnvObjects.GameObject;
 import Enviroment.EnvObjects.GameObject;
 
 /**
