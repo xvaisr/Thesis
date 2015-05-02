@@ -1,0 +1,49 @@
+every leaf kontains between m and M records unles it is root
+
+for each index record (obdelnik I, identifikator mnoziny - tuple identifier)
+in leaf node, I is the smallest rectangle, that spatially contains
+the n-dimensional data object represented by a tuple
+
+every non leaf node has between m and M children unles it is a root
+
+For each entery (I, child node / child pointer) in a non-leaf node,
+I is the smallest rectangle, that spatialy contains the rectangles in
+child node.
+
+The root node has at least two children, unless it is a leaf at the same
+time
+
+all leaves appear on the same level
+
+Alg. Search:
+Given tree whose root node is T find all index records whose rectangles
+overlap a search rectangle S
+
+Search subtree - If T is not a leaf, check each entery E to determine
+whether or not overlaps S (search rectangle). Invoke search on each entery
+with overlaping recangle.
+
+If T is a leaf, check all enteries to determine wether or not overlaps S.
+If so E is qulifying record.
+
+Alg. Insertion
+Inserting  index records ifor new data tuples is similar to B-tree in that
+new index records
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,45 @@
+// Jedná se o odstraňování uzlu a reinsert ...
+
+Najdi list L ve kterém je záznam E, odstraň záznam, invokuj CondenseTree ...
+
+CT1 [Inicialize] Set N = L and Let Q to be set of eliminated nodes. 
+Set Q to be empty.
+
+CT2 [Find parent entry] If N is a root skyp to CT6. Otherwise let
+P to be parent of N and let En be N's entry in P.
+            
+CT3 [eliminate under-full node] If N has fewer than m enteries
+delete En from P and add N to set Q
+            
+CT4 [Adjust covering rectangle] If N has not been eliminated,
+adjust En's I to tightly contain all enteries in N.
+            
+CT5 [Move up one level in tree] set N = P and repeat from CT2
+        
+CT6 [Re-insert] reinsert All Enteries of nodes in set Q. Enteries
+from eliminated leaf nodes are reinserted in tree leaves as described
+in Insert algorithm, but enteries from higher-level nodes must be
+placed higher in the tree so that leaves of their dependent subtrees
+will be on the same levels as the leaves of the main tree.
+
+Otázky / jak to chápu já ... 
+1) Do množiny Q dávám ty podtékající uzly, pokud jsem je ze stromu odebral.
+2) CT2 pokud to není kořen, do P uložím rodičovský uzel a En má být co ?
+   En je obezně vzato záznam, ale co by dělal zaznam z N v P ?
+   Tím bych defakto posunul celej podstom o jeden level nahoru,
+   a už by to nebyl vyvážený strom
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

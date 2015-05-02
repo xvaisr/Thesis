@@ -1,0 +1,28 @@
+// agent actions
+"update_percepts"
+"crawl"
+"collect"
+"unload"
+"attack"
+"stop_attack"
+
+// anthill actions
+"new_agent"
+"upgrade_attack"
+"upgrade_armor"
+"upgrade_speed"
+
+// system actions
+addReasoningAction
+calculateDistance
+dead
+finishedMovement
+getEscapeDirection
+getGameTime
+getHome
+getPosition
+getRandomDirection
+getUpdateRate
+isColeser
+isWeaker
+teamBroadcast

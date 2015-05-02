@@ -1,0 +1,35 @@
+Abstraktní datová struktura pro uchovávání prostorových dat.
+Využívá překrývajících se obdelníků / čtverců, kde tyto obdelníky 
+akumulují všechny objekty v prostoru daném tímto obdelníkem.
+V listových uzlech je nejmenší možný obdelník schopný zapouzdřit konkrétní
+objekt. Využívá se překrývání jednotlivých obdelníků.
+
+nelistovy uzel obsahuje CP a obdelnik
+CP je odkaz na potomka (další uzel)
+obdelnik je obdelnik minimalnich hranic vsech obdelniku v poduzlech
+
+listovi uzel obsahuje Oid a obdelnik
+Oid je odkaz na reprezentovany objekt (odkaz do databaze objektu)
+obdelnik je obdelnik minimalnich hranic zapouzdrujicich dany objekt
+
+Necht M je maximalni pocet zaznamu, ktere se vejdou do jednoho uzlu
+a m je parametr urcujici minimalni pocet tehto zaznamu (2 <= m <= M/2)
+R-tree pak vykzuje nasledujici vlastnosti
+- koren ma alespon dva potomky pokud neni zaroven listem
+- vsechny nelistove uzly maji mezi m a M potomky, pokud nejsou korenem
+- kazdy list ma mezi m a M zaznamy pokud neni zaroven korenem
+- vsechny listy jsou na stejne urovni
+
+R-tree (R*-tree) je dynamicka struktura. vkladani a mazani je mozne
+michat s vyhledavacimi dotazy. Ocividne, struktura musi umoznovat
+prekrivani se obdelniku, z cehoz vypliva ze nelze garantovat pouze jednu
+cestu pro ziskani stejneho vysledku.
+
+
+
+
+
+
+
+
+
