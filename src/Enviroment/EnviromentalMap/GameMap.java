@@ -8,7 +8,6 @@ package Enviroment.EnviromentalMap;
 
 import Enviroment.EnvObjFeatures.CollidableGameObject;
 import Enviroment.EnvObjFeatures.DetectableGameObject;
-import Enviroment.EnvObjFeatures.DrawableGameObject;
 import Enviroment.EnvObjFeatures.Emitors.Emitor;
 import Enviroment.EnvObjFeatures.Emitors.SmellEmitor;
 import Enviroment.EnvObjFeatures.Emitors.VisualEmitor;
@@ -553,6 +552,12 @@ public class GameMap implements ExtendedMapInterface, MapContainer {
         
         return objectList;
     }
+    
+    @Override
+    public ArrayList<Chunk> getChunksInArea(Rectangle r) {
+        return this.dynamicMap.getChunksInArea(r);
+    }
+    
     // </editor-fold>
     
 

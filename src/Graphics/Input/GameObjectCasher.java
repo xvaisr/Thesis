@@ -7,6 +7,7 @@
 package Graphics.Input;
 
 import Enviroment.EnvObjects.GameObject;
+import Graphics.ViewAndDraw.ViewSpaceHolder;
 import java.util.ArrayList;
 
 /**
@@ -15,5 +16,10 @@ import java.util.ArrayList;
  */
 public interface GameObjectCasher {
 
+    public void setViewChanged();
+    public void setMapChanged();
+    
+    public void setNewViewSpaceHolder(ViewSpaceHolder view);
+    
     public ArrayList<GameObject> getVisibleObjects();
 }

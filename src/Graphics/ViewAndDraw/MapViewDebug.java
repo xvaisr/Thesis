@@ -9,12 +9,14 @@ package Graphics.ViewAndDraw;
 import Enviroment.EnvObjects.GameObject;
 import Enviroment.EnviromentalMap.MapInterface;
 import Enviroment.Model;
+import Enviroment.SearchForDraw;
 import Graphics.Input.GameObjectCasher;
 import Graphics.ViewAndDraw.View;
 import Graphics.Input.MouseBehavior;
 import Graphics.ViewAndDraw.ViewComponents.Components.MapComponent;
 import Graphics.ViewAndDraw.ViewComponents.Container;
 import Graphics.ViewAndDraw.ViewComponents.UiComponent;
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
@@ -28,14 +30,16 @@ import java.util.ArrayList;
 public class MapViewDebug extends View implements GameObjectCasher {
     public static final MapViewDebug  mapview = new MapViewDebug(800, 600);
     private final Rectangle selection;
-    private final MouseBehavior mouseBehavior;
+    private SearchForDraw casher;
+    private MapComponent map;
 
     public MapViewDebug() {
         super();
         this.selection = new Rectangle();
-        this.mouseBehavior = new MouseBehavior();
+        this.casher = SearchForDraw.getInstance();
+        this.casher.setNewViewSpaceHolder(this);
         
-        UiComponent map = new MapComponent(this);
+        this.map = new MapComponent(this.casher);
         Container c = this.getContainer();
         c.addComponent(map);
         c.setVisible(true);
@@ -48,17 +52,16 @@ public class MapViewDebug extends View implements GameObjectCasher {
     public MapViewDebug(Point p, int width, int height) {
         super(p, width, height);
         this.selection = new Rectangle();
-        this.mouseBehavior = new MouseBehavior();
+        this.casher = SearchForDraw.getInstance();
+        this.casher.setNewViewSpaceHolder(this);
         
-        UiComponent map = new MapComponent(this);
+        this.map = new MapComponent(this.casher);
         Container c = this.getContainer();
         c.addComponent(map);
         c.setVisible(true);
     }
     
     public void setSelection (Rectangle r) {
-        
-        
         synchronized(this.selection) {
             if (r != null) {
                 this.selection.setLocation(r.getLocation());
@@ -71,13 +74,42 @@ public class MapViewDebug extends View implements GameObjectCasher {
         }
     }
     
+    public void setSearcher(SearchForDraw s) {
+        if (s != null) {
+            this.casher = s;
+            this.map.setNewGameObjectCasher(casher);
+        }
+    }
+    
+    @Override
+    public void setWindowSize(int width, int height) {
+        super.setWindowSize(width, height);
+        if (this.casher != null) {
+            casher.setViewChanged();
+        }
+        
+    }
+    
+    @Override
+    public void setWindowSize(Dimension d) {
+        super.setWindowSize(d);
+        if (this.casher != null) {
+            casher.setViewChanged();
+        }
+    }
+    
+    @Override
+    public boolean shiftWindow(int horizontaly, int verticaly) {
+        boolean b = super.shiftWindow(horizontaly, verticaly);
+        if (b && this.casher != null) {
+            casher.setViewChanged();
+        }
+        return b;
+    }
+    
     @Override
     public ArrayList<GameObject> getVisibleObjects() {
-        MapInterface map = Model.getCurrentMap();
-        if (map == null) {
-            return new ArrayList();
-        }
-        return map.getGameObjectsInArea(this.getAreaOfView());
+        return new ArrayList();
     }
         
     @Override
@@ -130,4 +162,13 @@ public class MapViewDebug extends View implements GameObjectCasher {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+    // nothing to be done in these methods
+    @Override
+    public void setViewChanged() {}
+
+    @Override
+    public void setMapChanged() {}
+
+    @Override
+    public void setNewViewSpaceHolder(ViewSpaceHolder view) {}
 }

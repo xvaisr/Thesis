@@ -5,7 +5,7 @@
  */
 
 package Enviroment.EnviromentalMap.SpecializedMaps;
-
+import Enviroment.Model;
 import Enviroment.EnvObjects.GameObject;
 import Enviroment.EnviromentalMap.Chunk;
 import Enviroment.EnviromentalMap.MapContainer;
@@ -190,6 +190,10 @@ public class DynamicObjectsTreeMap implements MapInterface {
         }
         
         return objectList;
+    }
+    
+    public ArrayList<Chunk> getChunksInArea(Rectangle r) {
+        return this.dynamicMapTree.Find(r);
     }
 
     @Override

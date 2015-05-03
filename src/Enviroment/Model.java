@@ -50,7 +50,7 @@ public class Model {
     // preference: false - food, true - watter
     private static final boolean PREFERENCE = false; 
     //public final static Random rand = new Random();
-    public final static Random rand = new Random(25);
+    public final static Random rand = new Random(15);
     
     // publc painter index constants
     public static final int AGENT_PAINTER_INDEX = 0;
@@ -66,6 +66,7 @@ public class Model {
     private final ArrayList<Painter> painters;
     private GameMap map;
     private long gameStart;
+    private Chunk chunk;
     
     private Model() {
         this.agents = new HashMap(EXPECTED_AGENT_COUNT);
@@ -107,6 +108,18 @@ public class Model {
     public static long getGameStart() {
         return Model.instance.gameStart;
     }
+    
+    // <editor-fold defaultstate="collapsed" desc="Agent movement testing">
+    
+    public static void setCurrnetChunk(Chunk c) {
+        instance.chunk = c;
+    }
+    
+    public static Chunk getCurrnetChunk() {
+        return instance.chunk;
+    }
+    
+    // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Map setup">
     

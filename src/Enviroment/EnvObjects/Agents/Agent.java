@@ -29,9 +29,11 @@ import Enviroment.EnvObjFeatures.SensingGameObject;
 import Enviroment.EnvObjects.GameObject;
 import Enviroment.EnvObjects.GameObjectPrototype;
 import Enviroment.EnvObjects.ObjectParts.Shape;
+import Enviroment.EnviromentalMap.Chunk;
 import Enviroment.EnviromentalMap.CollisionDetector;
 import Enviroment.EnviromentalMap.Compas;
 import Enviroment.EnviromentalMap.MapContainer;
+import Enviroment.Model;
 import Graphics.Painters.Painter;
 import java.awt.Color;
 import java.awt.Point;
@@ -395,35 +397,36 @@ public class Agent extends GameObjectPrototype implements SensingGameObject,
         if (!canMove) {
             return false;
         }
-        
-        if (this.destination.equals(this.getPosition())) {
-            this.rx = this.destination.getX();
-            this.ry = this.destination.getY();
+
+        // if no movement is required, do nothing successfully ...
+        if (this.getDestinattion().equals(this.getPosition())) {
             return true;
         }
         
-        Point cp = this.getPosition();
+        Point cp = this.getPosition(); // current position
+        Point ns = new Point(); // next step
+        
         Point dir = Compas.getDirectionByName(Compas.getDirectionName(this.getPosition(), this.destination));
-        Double dx, dy;
         
         // just for not evaluating that twice
         unifiedDistance = (unifiedDistance * this.speed);
         
-        dx = (unifiedDistance * dir.x) + this.rx;
-        dy = (unifiedDistance * dir.y) + this.ry;
+        // relative position / offset - acumulated fractions from each step
+        this.rx += (unifiedDistance);
+        this.ry += (unifiedDistance);
         
-        Point np = new Point(); 
-        np.setLocation(dx.intValue(), dy.intValue());
+        // evaluation of coords after thist step and recalculating relative position
+        ns.setLocation(this.rx.intValue(), this.ry.intValue());
+        this.rx -= ns.x;
+        this.ry -= ns.y;
         
-        this.rx = dx;
-        this.ry = dy;
-        
-        boolean succes = true;
-        
-        if (this.getMapContainer() != null && !np.equals(cp)) {
-            succes = this.getMapContainer().getMap().moveGameObjectTo(this, np);
+        // flag indicating if agent was able to move to new coordinates
+        boolean succes = true;        
+        if (this.getMapContainer() != null) {
+            succes = this.getMapContainer().getMap()
+               .moveGameObjectTo(this, (cp.x + (ns.x  * dir.x)) , (cp.y + (ns.y  * dir.y)));
         }
-        
+        Model.setCurrnetChunk((Chunk) this.getMapContainer());
         return succes;
     }
     

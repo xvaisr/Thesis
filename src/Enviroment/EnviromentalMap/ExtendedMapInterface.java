@@ -8,6 +8,7 @@ package Enviroment.EnviromentalMap;
 
 import Enviroment.EnvObjFeatures.Senses.Sense;
 import Enviroment.EnvObjects.GameObject;
+import Enviroment.EnviromentalMap.Chunk;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -27,6 +28,8 @@ public interface ExtendedMapInterface extends MapInterface {
     public ArrayList<GameObject> getDetectedObjects(Sense s);
     public ArrayList<GameObject> getDetectedObjectsStaticMap(Sense s);
     public ArrayList<GameObject> getDetectedObjectsDynamicMap(Sense s);
+    
+    public ArrayList<Chunk> getChunksInArea(Rectangle r);
     
 }
 

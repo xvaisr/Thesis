@@ -7,7 +7,7 @@
 package Graphics;
 
 import Enviroment.Puppeteer;
-import Graphics.Input.MouseBehavior;
+import Enviroment.SearchForDraw;
 import Graphics.GUIEvents.GUIEvent;
 import Graphics.GUIEvents.GUIEventListener;
 import Graphics.ViewAndDraw.MapView;
@@ -28,12 +28,11 @@ public class UserInterfaceDebug implements Runnable, GUIEventListener{
     private static final int DELAY_MS = 16;
     private static final int ms2sec = 1000;
     
-    private final View view;
-    private final MouseBehavior mouse;    
+    private final View view; 
     private GameWindow window;
     private GameScreen screen;
     private Puppeteer puppeteer;
-    private Thread puppeteerThread;
+    private Thread puppeteerThread, searchDrawThread;
     
     private int step;                   // pixels shifted per step
     private int delay;                  // how long to wait before next step 
@@ -42,11 +41,11 @@ public class UserInterfaceDebug implements Runnable, GUIEventListener{
     
     public UserInterfaceDebug() {
         this.view = MapViewDebug.mapview;
-        this.mouse = new MouseBehavior();
         this.window = new GameWindow();
         this.screen = new GameScreen(this.view);
         this.puppeteer = new Puppeteer();
         this.puppeteerThread = new Thread(this.puppeteer, "Puppeteer");
+        searchDrawThread = new Thread(SearchForDraw.getInstance(), "SearchForDraw");
         
         
         this.step = STEP;
@@ -125,6 +124,7 @@ public class UserInterfaceDebug implements Runnable, GUIEventListener{
         }
         else if (e.getType() == GUIEvent.type.windowOpened) {
             this.puppeteerThread.start();
+            this.searchDrawThread.start();
         }
     }
     

@@ -49,7 +49,7 @@ public class Main {
         
         // setup teams
         Model.addTeam(new Team(Color.red));
-        Model.addTeam(new Team(Color.MAGENTA));
+      //  Model.addTeam(new Team(Color.MAGENTA));
         
         // generate map
         Model.setNewMap(40, 30);
