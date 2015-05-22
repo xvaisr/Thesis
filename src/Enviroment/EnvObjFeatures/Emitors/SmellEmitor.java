@@ -14,7 +14,7 @@ import Enviroment.EnvObjFeatures.DetectableGameObject;
  */
 public class SmellEmitor extends AbstractEmitor {
     private static final int DEFAULT_SMELL = 0;
-    private double range;
+    private double concentration;
     private int decPercentage;
     private int smell;
     
@@ -23,7 +23,7 @@ public class SmellEmitor extends AbstractEmitor {
         super(originator);
         this.smell = DEFAULT_SMELL;
         this.decPercentage = 0;
-        this.range = 0;
+        this.concentration = 0;
     }
     
     public void setDecreasePercentage(int percentage) {
@@ -36,8 +36,8 @@ public class SmellEmitor extends AbstractEmitor {
     }
     
     public void decreaseIntensity() {
-        this.range = this.range
-                   - (this.range * (((double) this.decPercentage)/ 100));
+        this.concentration = this.concentration
+                   - (this.concentration * (((double) this.decPercentage)/ 100));
     }
     
     public void setEmitorSmell(int smell) {
@@ -49,13 +49,13 @@ public class SmellEmitor extends AbstractEmitor {
     }
     
     @Override
-    public void setEmitorRange(int range) {
-        this.range = (double) range;
+    public void setEmitorStrength(int strenght) {
+        this.concentration = (double) strenght;
     }
     
     @Override
-    public int getEmitorRange() {
-        Long l = new Long(Math.round(this.range));
+    public int getEmitorStrenght() {
+        Long l = new Long(Math.round(this.concentration));
         return l.intValue();        
     }
     

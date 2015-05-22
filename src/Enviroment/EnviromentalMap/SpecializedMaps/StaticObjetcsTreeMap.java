@@ -41,6 +41,14 @@ public class StaticObjetcsTreeMap implements MapInterface, MapContainer {
     }
 
     @Override
+    public boolean outOfBounds(Point p) {
+        boolean x, y;
+        x = p.x < 0 || p.x > this.getMapWidth();
+        y = p.y < 0 || p.y > this.getMapHeight();
+        return x || y;
+    }
+    
+    @Override
     public Dimension getMapSize() {
         return new Dimension(this.size);
     }

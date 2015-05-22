@@ -6,6 +6,8 @@
 
 package Agents.Actions;
 
+import Enviroment.EnvObjFeatures.DestructableGameObject;
+import Enviroment.EnvObjects.Agents.SimpleAnt;
 import Enviroment.EnvObjects.GameObject;
 import jason.asSyntax.Term;
 import java.util.List;
@@ -18,7 +20,27 @@ public class attack extends AgentAction {
 
     @Override
     public boolean execute(GameObject ag, List<Term> terms) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        SimpleAnt ant;
+        DestructableGameObject target;
+        
+        if (!(ag instanceof SimpleAnt)) {
+            return false;
+        }
+        
+        if (terms.isEmpty()) {
+            return false;
+        }
+        
+        ant = ((SimpleAnt) ag);
+        GameObject t = Enviroment.Model.getAgentByName(terms.get(0).toString());
+        
+        if (!(t instanceof DestructableGameObject)) {
+            return false;
+        }
+        
+        target = ((DestructableGameObject) t);
+        ant.setTarget(target);
+        return true;
     }
     
 }

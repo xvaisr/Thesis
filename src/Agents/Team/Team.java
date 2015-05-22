@@ -19,11 +19,14 @@ public class Team {
     private final int DEFAULT_ATTAK = 5;
     private final int DEFAULT_ARMOR = 1;
     private final int DEFAULT_SPEED = 5;
-    
+    private final String DEFAULT_HILL_AI = "";
+    private final String DEFAULT_ANT_AI = "";
     
     private AntHill hill;
     private final Color color;
     private ArrayList<Agent> members;
+    private String pathHillAI;
+    private String pathAntAI;
     
     private int attak;
     private int armour;

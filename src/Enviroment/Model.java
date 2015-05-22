@@ -17,13 +17,10 @@ import Enviroment.EnviromentalMap.GameMap;
 import Enviroment.EnviromentalMap.MapInterface;
 import Agents.Actions.AgentAction;
 import Enviroment.EnvObjFeatures.AgentInterface;
-import Enviroment.EnvObjFeatures.DrawableGameObject;
 import Enviroment.EnvObjects.Agents.Agent;
-import Enviroment.EnvObjects.RectangleObject;
-import Enviroment.EnviromentalMap.Chunk;
+ // import Enviroment.EnviromentalMap.Chunk;
 import Graphics.Painters.Painter;
 import Graphics.Painters.*;
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -66,7 +63,7 @@ public class Model {
     private final ArrayList<Painter> painters;
     private GameMap map;
     private long gameStart;
-    private Chunk chunk;
+    // private Chunk chunk;
     
     private Model() {
         this.agents = new HashMap(EXPECTED_AGENT_COUNT);
@@ -109,8 +106,8 @@ public class Model {
         return Model.instance.gameStart;
     }
     
-    // <editor-fold defaultstate="collapsed" desc="Agent movement testing">
-    
+    // <editor-fold defaultstate="collapsed" desc="Agent movement testing - debug">
+    /*
     public static void setCurrnetChunk(Chunk c) {
         instance.chunk = c;
     }
@@ -118,7 +115,7 @@ public class Model {
     public static Chunk getCurrnetChunk() {
         return instance.chunk;
     }
-    
+    */
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Map setup">
@@ -267,6 +264,22 @@ public class Model {
                 this.map.addGameObject(o);
             }
         } // */
+        
+        
+        /*
+            try {
+                // Creates agent
+                this.getEnvironmentInfraTier().getRuntimeServices().createAgent(agent_name, ai, null, architecture, null, null);
+                
+                // Adds initial beliefs
+                this.addBelief(agent_info.getName(), "home(" + Model.getWorld().getAnthill(agent_info.getTeam()).x + "," + Model.getWorld().getAnthill(agent_info.getTeam()).y + ")");
+                this.addBelief(agent_info.getName(), "update_rate(" + Model.getConfiguration().getPps() + ")");
+                this.addBelief(agent_info.getName(), "anthill(" + Model.getWorld().getTeam(team).getName() + ")");
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        */
         
         //*
         // prepare anthils for given teams

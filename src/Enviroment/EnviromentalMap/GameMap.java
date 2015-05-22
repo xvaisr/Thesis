@@ -72,6 +72,7 @@ public class GameMap implements ExtendedMapInterface, MapContainer {
         
         // inicialze dynamic map
         this.dynamicMap = new DynamicObjectsTreeMap(chunkSize, this.size);
+        this.dynamicMap.setAsInternalMap(this);
     }
     
     @Override
@@ -89,7 +90,9 @@ public class GameMap implements ExtendedMapInterface, MapContainer {
         return this.size.height;
     }
     
-    private boolean outOfBounds(Point p) {
+    
+    @Override
+    public boolean outOfBounds(Point p) {
         boolean x, y;
         x = p.x < 0 || p.x > this.getMapWidth();
         y = p.y < 0 || p.y > this.getMapHeight();
@@ -106,7 +109,7 @@ public class GameMap implements ExtendedMapInterface, MapContainer {
             return false;
         }
         
-        // <editor-fold defaultstate="collapsed" desc="Adding and moving objects">
+        // <editor-fold defaultstate="collapsed" desc="Adding movable objects">
         // if object is instance of MoveableGameObject, it belongs to dynamic map
         if (o instanceof MoveableGameObject) {
             // we need to check for colisions;
@@ -139,18 +142,21 @@ public class GameMap implements ExtendedMapInterface, MapContainer {
             success = this.dynamicMap.addGameObject(o);
         }
         // </editor-fold>
-        // if inseretd object is static, put it into static maps via it's emitors
+        
+        // if inserted object is static, put it into static maps via it's emitors
         else if (o instanceof DetectableGameObject) {
             DetectableGameObject detectable;
             detectable = (DetectableGameObject) o;
             success = this.addDetectableObject(detectable, detectable.getPosition());
         }
         
-        // if object is not detectable or movable there is no map to put that in
-        if (success) {
-            this.addedObjects.add(o);
-        }
+        /* for debug purposes only
+           if (success) {
+               this.addedObjects.add(o);
+           }
+        */
         
+        // if object is not detectable or movable there is no map to put that in
         return success;
     }
 
@@ -257,11 +263,11 @@ public class GameMap implements ExtendedMapInterface, MapContainer {
              */
             synchronized (map) {
                 o.setPosition(position);
-                // if object is in this map, it needs to be moved to new position
+                // if object is in this map, it needs to be removed from original position
                 if (o.getMapContainer() != null && o.getMapContainer().getMap() == this) {
-                    // mapos contains emitors, not object itself
+                    // maps contains emitors, not object itself
                     
-                    // for delete search ve need to use original position 
+                    // for delete search we need to use original position 
                     map.Delete(emitor, originalPosition);
                 }
                 // insert object (emitor) to it's new location;
@@ -308,23 +314,27 @@ public class GameMap implements ExtendedMapInterface, MapContainer {
                 collidable.setPosition(np);
                 collides = collidable.colides(colliding);
 
-                // if there is collision object cannot be inserted
+                /* 
+                   if there is collision and object cannot be inserted
+                   revert position changes, so data inconsistenci in tree map
+                   won't occure
+                */
                 if (collides) {
                     collidable.setPosition(cp);
                     break;
                 }
             }
-            boolean a = emitor.getOriginator() instanceof GameObject;
+            // boolean a = emitor.getOriginator() instanceof GameObject;
         }
 
-        if (emitorList.isEmpty()) {
-            for (GameObject g : this.addedObjects) {
-                boolean intersects = collidable.getBoundingBox().intersects(g.getBoundingBox());
-                intersects = intersects || false;
+        /* for debug purposes only
+            if (emitorList.isEmpty()) {
+                for (GameObject g : this.addedObjects) {
+                    boolean intersects = collidable.getBoundingBox().intersects(g.getBoundingBox());
+                    intersects = intersects || false;
+                }
             }
-        }
-        
-        
+        */
         return collides;
     }
     
@@ -345,7 +355,7 @@ public class GameMap implements ExtendedMapInterface, MapContainer {
          */
         boolean success = false;
         
-/*        // if object is instance of MoveableGameObject, it belongs to dynamic map
+        // if object is instance of MoveableGameObject, it belongs to dynamic map
         if (o instanceof MoveableGameObject) {
             // we need to check for collisions;
             if (o instanceof CollidableGameObject) {
@@ -359,22 +369,23 @@ public class GameMap implements ExtendedMapInterface, MapContainer {
                 }
                 boolean collision = false;
                 synchronized(map) {
-                    collision = this.collisionOccured(collidable, o.getPosition(), map);
+                    collision = this.collisionOccured(collidable, p, map);
                 }
                 
                 /*
                  * if collision with static maps occured, can't put object into 
                  * dynamic map as well
-                 * /
+                 */
                 if (collision) {
                     return false;
                 }
                 
             }
-            /* if it's movable object but doesn't collide, let dynamic map
-             * to deal with it synchronization is done inside chunk 
+            /*
+             * if it's movable object but doesn't collide, let dynamic map
+             * deal with it. Synchronization is done inside chunk 
              * implementation on their level
-              * / 
+             */ 
             success = this.dynamicMap.moveGameObjectTo(o, p);
         }
         else if (o instanceof DetectableGameObject) {
@@ -385,7 +396,6 @@ public class GameMap implements ExtendedMapInterface, MapContainer {
         }
         
         // if object is not detectable or movable there is no map to put that in
-        */
         return success; 
     }
     // </editor-fold>

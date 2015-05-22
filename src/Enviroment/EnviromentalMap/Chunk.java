@@ -132,6 +132,11 @@ public class Chunk implements MapContainer {
         return this.map.getMap();
     }
 
+    @Override
+    public boolean outOfBounds(Point p) {
+        return !this.r.contains(p);
+    }
+
 
     
 

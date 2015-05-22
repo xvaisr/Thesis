@@ -6,6 +6,7 @@
 
 package Agents.Actions;
 
+import Enviroment.EnvObjects.Agents.SimpleAnt;
 import Enviroment.EnvObjects.GameObject;
 import jason.asSyntax.Term;
 import java.util.List;
@@ -18,7 +19,16 @@ public class collect extends AgentAction {
 
     @Override
     public boolean execute(GameObject ag, List<Term> terms) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        SimpleAnt ant;
+        
+        if (!(ag instanceof SimpleAnt)) {
+            return false;
+        }
+        
+        ant = ((SimpleAnt) ag);
+        ant.collect();
+        
+        return ant.getItem() != null;
     }
     
 }

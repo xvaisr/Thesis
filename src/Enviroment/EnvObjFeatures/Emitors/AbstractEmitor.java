@@ -16,49 +16,53 @@ import java.awt.Rectangle;
  */
 public abstract class AbstractEmitor implements Emitor, RtreeNodeLinker {
     private DetectableGameObject originator;
-    private int range;
+    private volatile int strenght;
+    private volatile int radius;
     private volatile boolean active;
     private RtreeNode linkedNode;
     
     public AbstractEmitor(DetectableGameObject originator) {
         this.originator = originator;
         this.originator.setEmitor(this);
-        this.range = 0;
+        this.strenght = 0;
+        this.radius = AbstractEmitor.AUTO_RANGE;
         this.active = true;
         this.linkedNode = null;
     }
 
     @Override
-    public void setEmitorRange(int range) {
-        synchronized(this) {
-            this.range = range;
-        }
+    public void setEmitorStrength(int strenght) {
+        this.strenght = strenght;
     }
 
     @Override
-    public int getEmitorRange() {
-        int tmpRange;
-        synchronized(this) {
-            tmpRange = this.range;
-        }
-        return tmpRange;        
+    public int getEmitorStrenght() {
+        return this.strenght;
+    }
+    
+    @Override
+    public void setDispersionRadius(int radius) {
+        this.radius = radius;
+    }
+    
+    @Override
+    public int getDispersionRadius() {
+        return this.radius;
     }
 
     @Override
     public Rectangle getDispersionArea() {
-        int tmpRange = this.getEmitorRange();
         
         // if there is infinite range, emitor is detectable when object is
-        if (tmpRange == AbstractEmitor.AUTO_RANGE) {
+        if (this.radius == AbstractEmitor.AUTO_RANGE) {
             return this.originator.getBoundingBox();
         }
         
-        Point p = this.originator.getPosition();
-        int shift = tmpRange;
-        p.translate(-shift, -shift);
+        Rectangle area = new Rectangle(this.originator.getPosition());
+        area.grow(this.radius, this.radius);
         
-        tmpRange = tmpRange * 2;
-        return new Rectangle(p.x, p.y, tmpRange, tmpRange);
+        return area;
+        
     }
 
     @Override

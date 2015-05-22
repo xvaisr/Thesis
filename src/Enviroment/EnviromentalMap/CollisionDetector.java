@@ -6,15 +6,18 @@
 
 package Enviroment.EnviromentalMap;
 
-import Enviroment.Model;
 import Enviroment.EnvObjFeatures.CollidableGameObject;
-import Enviroment.EnvObjFeatures.DrawableGameObject;
 import Enviroment.EnvObjects.ObjectParts.LineSegment;
-import Graphics.ViewAndDraw.MapViewDebug;
-import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+
+/* // for debug purposes
+   import Graphics.ViewAndDraw.MapViewDebug;
+   import java.awt.Color;
+   import Enviroment.EnvObjFeatures.DrawableGameObject;
+   import Enviroment.Model;
+*/
 
 /**
  *

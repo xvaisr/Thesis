@@ -13,6 +13,8 @@ import Agents.Actions.AgentAction;
 import Enviroment.EnvObjFeatures.Senses.Sense;
 import Enviroment.EnvObjects.GameObject;
 import Enviroment.EnvObjects.Resources.ResourceBlock;
+import GraphicInterface.MenuInterfacce;
+import GraphicInterface.UserInterface;
 import jason.asSyntax.Literal;
 import jason.asSyntax.Structure;
 import java.util.ArrayList;
@@ -33,17 +35,30 @@ public class EnvirometControler extends Environment {
     
     @Override
     public void init(String[] args) {
+        // init actions map
         this.actions = new HashMap();
-        // define actions
-        this.actions.put(null, null);
+        this.initActions();
         
+        // setup connection to model
+        Model.getInstance().setEnviromentalControler(this);
+        
+        // start up user unterface
+        // UserInterface ui = UserInterface.getInstance();
+        MenuInterfacce ui = MenuInterfacce.getInstance();
+        Thread t  = new Thread(ui);
+        t.start();
     }
     
     @Override
     public boolean executeAction(String agent_name, Structure action) {
         GameObject ag = Model.getAgentByName(agent_name);
         AgentAction ac = this.actions.get(action.getFunctor());
-        return ac.execute(ag, action.getTerms());
+        if (ac != null) {
+            return ac.execute(ag, action.getTerms());
+        }
+        
+        System.out.println("Doimplementuj / dolinkuj akci: " + action.toString());
+        return false;
     }
        
     protected void updateAgsPercept() {
@@ -98,5 +113,9 @@ public class EnvirometControler extends Environment {
 	this.addPercept(agent_name, Literal.parseLiteral(string+"[source(self)]"));
     }
 
+    private void initActions() {
+        // this.actions.put(null, null);
+    }
+    
     
 }

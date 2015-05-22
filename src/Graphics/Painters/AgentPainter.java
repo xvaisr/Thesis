@@ -28,7 +28,7 @@ public class AgentPainter implements Painter {
         ny = aov.height - r.y - r.height;       
         r.translate(0, (ny - r.y)); // shif rectangle to it's correct position
         
-        r.grow(RADIUS, RADIUS);
+        // r.grow(RADIUS, RADIUS);
         
         g.setColor(obj.getColor());
         g.fillOval(r.x, r.y, r.width, r.height);

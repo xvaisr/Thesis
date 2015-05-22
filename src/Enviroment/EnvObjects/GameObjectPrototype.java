@@ -51,7 +51,7 @@ public class GameObjectPrototype implements GameObject {
         this.vertices = new ArrayList();
         this.segments = new ArrayList();
         this.shape = null;
-        this.r = new Rectangle();
+        this.r = null;
         
     }
     

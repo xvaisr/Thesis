@@ -1,0 +1,133 @@
+swarm inteligence je postavená na pravidlech
+
+role:
+scout - bude převážně hledat a případně rekrutovat
+keeper - bude čekat u mraveniště na návrat rekrutujících mravenců
+solider - bude následovat mravence, kteří našli protivníka, a útočit, až k protivníkovy dorazí,
+            zachraňovat spojence, rekrutovat další vojáky
+worker - bude následovat mravence, kteří našli zdroj, rekrutovat další dělníky a vracet se ke zdroji
+            do vyčerpání tohoto zdroje
+
+pravidla:
+// pravidla pro vedení
+- pokud rekrutuješ, čekej na follow
+- pokud jsi dostal follow od více než jednoho mravence jdi směrem k cíli a vždy čekej,
+  než tě ostatní doženou
+
+->
+// pro výběr cesty
+- pokud mravenec nedetekuje zdroj surovin, nebo chemickou cestičku vybere náhodný směr
+- pokud mravenec detekuje zdroj nebo bod chemické cestičky jde směrem k němu
+- pokud mravenec detekuje více zdrojů vybere náhodně
+- pokud mravenec detekuje více bodů chemické cestičky a zdroj, vybere ten, který je ve směru daného zdroje
+- pokud mravenec detekuje bod chemické cestičky s pachem "nechoď sem" nepůjde tímto směrem bez ohledu na
+        ostatní vjemy
+- pokud mravenec detekuje více bodů chemické cestičky, zvolý bod se silnější intenzitou
+
+// pravidla pro boj
+- pokud je protivník slabší, nebo v menším počtu -> attak
+- pokud je poblíž zraněný spojenec volající o pomoc -> rescue
+- pokud je nepřátel víc, nebo je protivník silnější -> retreat
+
+// pravidla pro nešení
+- pokud mravenec něco nese -> imbark
+
+// pravidla pro rekrutování
+- pokud víš, kde je zdoj nebo protivník, náhodně vyber co budeš propagovat
+- pokud propaguješ protivníka změň roly na solider
+- pokud propaguješ zdroj, změň roly na worker
+- pokud "inHurry" -> tandemRunning
+
+plány:
+nothingToDo - potřebuješ se rozhodnout zda budeš záloha, nebo se vypravíš hledat (keeper / scout)
+
+forage - hledej dokud nenajdeš zdroj, nebo protivníka
+recrute - v mraveništi získávej podporu
+
+follow - následovat konkrétního mravence (scouta)
+tundemRunning - bafni nějakého mravence a odtáhni ho k cíli (if inHurry)
+lead - veď rekrutované mravence k cíly 
+
+attak - zaútoč na mravence 
+collect - zaútočit na blok surovin a pokračovat dokud blok nevydá zdroje
+inbark - vrať se do mraveniště, po návratu:
+       * vracíš se z boje -> nothingToDo
+       * vracíš se se zdroji - dropResource
+                             ? blok existoval když jsi odcházel -> recrute[resurce]
+                             ? blok neexistoval, když jsi odcházel -> nothigToDo
+       * ustupuješ -> recruit [enemy]
+       * vracíš se z rescue ? rescue[from(injury)] -> recruite[enemy]
+                            ? rescue[from(hunger)] - změň roly na scouta
+       * hunger - najez se / odpočívej
+
+rescue - pokud nějaký mravenec volá o pomoc, odtáhni ho do mraveniště pokud se vracíš z boje rekrutuj další
+retreat - pokud je protivník v dosahu, kousni ho, ale v každé případě jdi směrem domů
+
+hungry - najez se, nebo se vrať do mraveniště a odpočiň si, změň roly na keepra
+injured - vrať se do mraveniště a najez se nebo si odpočiň, změň roly na keepra
+
+výhozí znalosti:
+- nemám co na práci (nothingToDo)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

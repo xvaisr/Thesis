@@ -431,7 +431,7 @@ public class Rtree<T>{
     
     private static Pair<RtreeNode, RtreeNode>
         LinearPickSeeds(ArrayList<RtreeNode> list) {                            // node spliting  *** yet to be implemented
-            return null;
+            return null;                                                        // not used
     }
     
     private static RtreeNode // Pair<RtreeNode, RtreeNode> - for future optimalization
@@ -534,7 +534,7 @@ public class Rtree<T>{
         return result;
     }
     
-    private RtreeNode<T> FindLeaf(T object, Rectangle r) {                    // find leaf containing entry with given object
+    private RtreeNode<T> FindLeaf(T object, Rectangle r) {                      // find leaf containing entry with given object
         RtreeNode node = this.FindEntry(object, r);
         if (node != null) {
             node = node.getParent();

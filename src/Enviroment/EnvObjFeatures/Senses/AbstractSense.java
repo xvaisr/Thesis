@@ -139,8 +139,8 @@ public abstract class AbstractSense implements Sense {
         p = this.preceptor.getPosition();
         
         // make sure that range circels intersect
-        int delta = CollisionDetector.getDistance(o, p);
-        return (delta > (this.getSenseRange() + e.getEmitorRange()));
+        int distance = CollisionDetector.getDistance(o, p);
+        return (distance <= (this.getSenseRange() + e.getDispersionRadius()));
     }
     
 }

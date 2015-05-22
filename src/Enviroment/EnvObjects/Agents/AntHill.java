@@ -10,7 +10,6 @@ import Agents.Team.Team;
 import Enviroment.EnvObjFeatures.AgentInterface;
 import Enviroment.EnvObjFeatures.CollidableGameObject;
 import Enviroment.EnvObjFeatures.DrawableGameObject;
-import Enviroment.EnvObjFeatures.Emitors.Emitor;
 import Enviroment.EnvObjFeatures.Emitors.SmellEmitor;
 import Enviroment.EnvObjFeatures.Emitors.VisualEmitor;
 import Enviroment.EnvObjects.DetectableObjectPrototype;
@@ -31,6 +30,7 @@ public class AntHill extends DetectableObjectPrototype
 {
     // private emitor constants
     private final int SMELL_DISTANCE = 150;  // How far is anthill pecivable via smell
+    private final int SMELL_STRENGHT = 160;  // How strong smell is (concentration of pheromones)
     
     // shape setting constants
     private static final int ANTHILL_CORNERS = 25;
@@ -98,39 +98,35 @@ public class AntHill extends DetectableObjectPrototype
         this.team = null;
         
         // setup default emitors - visibility (ant)
-        Emitor e;
-        e = new VisualEmitor(this);
-        e.setEmitorActive(true);
+        // visibility
+        VisualEmitor ve;
+        ve = new VisualEmitor(this);
+        ve.setEmitorActive(true);
+        /*
+           setting up strenght ad radius of visual emitor is not necesary
+            - different implementation of detection
+         */
         
-        e = new SmellEmitor(this);
-        e.setEmitorRange(SMELL_DISTANCE);
-        e.setEmitorActive(true);
-        
-        // setup smell emitor's "smell"
-        SmellEmitor smell;
-        try {
-            smell = (SmellEmitor) this.getEmitor(SmellEmitor.class);
-            smell.setEmitorSmell(this.color.getRed());
-        }
-        catch (Exception ex) {
-            // can't setup smell's "smell" :( No matter, do nothing
-        }
+        // smell
+        SmellEmitor se;
+        se = new SmellEmitor(this);
+        se.setDecreasePercentage(0); // cannot decrease
+        se.setEmitorSmell(this.color.getRGB()); // setup smell emitor's "smell"
+        se.setEmitorStrength(SMELL_STRENGHT);
+        se.setDispersionRadius(SMELL_DISTANCE);
+        se.setEmitorActive(true);
     }
     
     // <editor-fold defaultstate="collapsed" desc="DrawableGameObject interface">
     @Override
     public void setColor(Color c) {
-        this.color = c;
+        if (c == null) {
+            return;
+        }
         
-        // setup smell emitor's "smell" to be identical with current color
-        SmellEmitor smell;
-        try {
-            smell = (SmellEmitor) this.getEmitor(SmellEmitor.class);
-            smell.setEmitorSmell(this.color.getRed());
-        }
-        catch (Exception ex) {
-            // can't setup smell's "smell" :( No matter, do nothing
-        }
+        this.color = c;
+        SmellEmitor se = (SmellEmitor) this.getEmitor(SmellEmitor.class);
+        se.setEmitorSmell(this.color.getRGB());
     }
 
     @Override
@@ -184,5 +180,21 @@ public class AntHill extends DetectableObjectPrototype
             return false;
         }
         return CollisionDetector.getCollide(this, another);
+    }
+    
+    public boolean upgradeArmor() {
+        return false;
+    }
+    
+    public boolean upgradeAttack() {
+        return false;
+    }
+    
+    public boolean upgradeSpeed() {
+        return false;
+    }
+    
+    public boolean createAnt() {
+        return false;
     }
 }

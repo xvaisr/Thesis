@@ -6,6 +6,7 @@
 
 package Agents.Actions;
 
+import Enviroment.EnvObjects.Agents.AntHill;
 import Enviroment.EnvObjects.GameObject;
 import jason.asSyntax.Term;
 import java.util.List;
@@ -18,7 +19,14 @@ public class upgrade_attack extends AgentAction {
 
     @Override
     public boolean execute(GameObject ag, List<Term> terms) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        AntHill hill;
+        
+        if(!(ag instanceof AntHill)) {
+            return false;
+        }
+        
+        hill = ((AntHill) ag);
+        return hill.upgradeAttack();
     }
     
 }

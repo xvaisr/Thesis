@@ -7,6 +7,7 @@
 package Enviroment.EnvObjects.Obsticles;
 import Enviroment.EnvObjFeatures.CollidableGameObject;
 import Enviroment.EnvObjFeatures.DrawableGameObject;
+import Enviroment.EnvObjFeatures.Emitors.Emitor;
 import Enviroment.EnvObjFeatures.Emitors.VisualEmitor;
 import Enviroment.EnvObjects.DetectableObjectPrototype;
 import Enviroment.EnviromentalMap.CollisionDetector;
@@ -57,7 +58,9 @@ public class Obsticle extends DetectableObjectPrototype
         this.painter = null;
         
         // Visual emitor (the only one obsticla has ...)
-        this.setEmitor(new VisualEmitor(this));
+        Emitor e = new VisualEmitor(this);
+        e.setEmitorActive(true);
+        this.setEmitor(e);
     }
     
     @Override

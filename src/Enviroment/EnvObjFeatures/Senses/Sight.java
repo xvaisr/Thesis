@@ -59,7 +59,7 @@ public class Sight extends AbstractSense {
         // if any vertex is in ranage object can bee seen
         for (Point o : vertices) {
             int delta = CollisionDetector.getDistance(o, p);
-            inRange = (delta > (this.getSenseRange() + e.getEmitorRange()));
+            inRange = (delta > (this.getSenseRange() + e.getEmitorStrenght()));
             
             if (inRange) break;
         }

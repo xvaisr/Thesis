@@ -16,7 +16,7 @@ public class VisualEmitor extends AbstractEmitor {
 
     public VisualEmitor(DetectableGameObject originator) {
         super(originator);
-        this.setEmitorRange(AUTO_RANGE);
+        this.setEmitorStrength(AUTO_RANGE);
     }
 
 }

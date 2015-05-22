@@ -5,9 +5,11 @@
  */
 
 package Enviroment.EnviromentalMap.SpecializedMaps;
-import Enviroment.Model;
+import Enviroment.EnvObjFeatures.CollidableGameObject;
+import Enviroment.EnvObjFeatures.Emitors.Emitor;
 import Enviroment.EnvObjects.GameObject;
 import Enviroment.EnviromentalMap.Chunk;
+import Enviroment.EnviromentalMap.ExtendedMapInterface;
 import Enviroment.EnviromentalMap.MapContainer;
 import Enviroment.EnviromentalMap.MapInterface;
 import static Enviroment.EnviromentalMap.MapInterface.DEFAULT_HEIGHT;
@@ -127,36 +129,107 @@ public class DynamicObjectsTreeMap implements MapInterface {
     }
     
     @Override
-    public boolean moveGameObjectTo(GameObject o, Point p) {
-        if (o.getMapContainer().getMap() != this) {
+    public boolean moveGameObjectTo(GameObject o, Point np) {
+        boolean collides = false;
+        Point cp = o.getPosition();
+        Rectangle area = o.getBoundingBox();
+        MapContainer container = o.getMapContainer();
+        
+        
+        if ((container == null || container.getMap() == null) ||
+            (container.getMap() != this && container.getMap() != this.parent))
+        {
             return false;
         }
         
-        // if object is outside of map, do not allow to be placed here
-        if (this.outOfBounds(o.getPosition())) {
+        // if object is shifting outside of map, do not allow it
+        if (this.outOfBounds(np)) {
             return false;
         }
         
-        MapContainer backup = o.getMapContainer();
-        Point q = o.getPosition();
-        
-        backup.removeGameObject(o);
-        o.setPosition(p);
-        
-        ArrayList<Chunk> chunksFound;
-        chunksFound = this.dynamicMapTree.Find(p);
-        
-        for (Chunk c : chunksFound) {
-            if (c.addGameObject(o)) {
-                return true;
+        // solve collisions
+        if (o instanceof CollidableGameObject) {
+            ArrayList<GameObject> objectList;
+            CollidableGameObject collidable = null, colliding = null;
+            
+            collidable = ((CollidableGameObject) o);
+            
+            // shift search area to correct location
+            area.translate((np.x - cp.x), (np.y - cp.y));
+            
+            // get objects whitch can possibly colide with moving object
+            if (this.parent != null) {
+                if (this.parent instanceof ExtendedMapInterface) {
+                    // if it is possible only from static map (optimization)
+                    objectList = ((ExtendedMapInterface) this.parent)
+                        .getGameObjectsInAreaStaticMap(area);
+                }
+                else {
+                    objectList = this.parent.getGameObjectsInArea(area);
+                }
             }
+            else { // if there is no connection to other maps, give empty list
+                objectList = new ArrayList(0);
+            }
+                   
+            for (GameObject z : objectList) {
+                if (z instanceof CollidableGameObject) {
+                    colliding = ((CollidableGameObject) z);
+                }
+                else {
+                    colliding = null;
+                }
+                
+                // skip noncoliding objects
+                if (colliding == null) {
+                    continue;
+                }
+                
+                // solve colision
+                collidable.setPosition(np);
+                collides = collidable.colides(colliding);
+                
+                if (collides) {
+                    // return object to it's original position
+                    collidable.setPosition(cp);
+                    break;
+                }
+            }
+            
         }
         
-        o.setMapContainer(backup);
-        o.setPosition(q);
-        return false;
+        // if there is colision, object can't move there
+        if (collides) {
+            return false;
+        }
+        
+        // if there is no problem, move object
+        o.setPosition(np);
+        
+        // if out of bounds of it's original chunk
+        if (container.outOfBounds(np)) {
+            
+            ArrayList<Chunk> chunksFound;
+            chunksFound = this.dynamicMapTree.Find(np);
+        
+            for (Chunk c : chunksFound) {
+                if (c.getRectangle().contains(np) && c.addGameObject(o)) {
+                    container.removeGameObject(o);
+                    o.setMapContainer(c);
+                    return true;
+                }
+            }
+            
+            // if no chunk found or there is an error, set objects original
+            // position and fail
+            o.setMapContainer(container);
+            o.setPosition(cp);
+            return false;
+        }
+        
+        return true;
     }
-
+    
     @Override
     public ArrayList<GameObject> getGameObjectsInArea(Rectangle r) {
         ArrayList<GameObject> objectList = new ArrayList();

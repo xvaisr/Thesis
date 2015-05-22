@@ -16,8 +16,10 @@ import java.awt.Rectangle;
 public interface Emitor {
     public static final int AUTO_RANGE = -1;
     
-    public void setEmitorRange(int range);    
-    public int getEmitorRange();    
+    public void setEmitorStrength(int strenght);    
+    public int getEmitorStrenght();
+    public void setDispersionRadius(int radius);
+    public int getDispersionRadius();
     public Rectangle getDispersionArea();    
     public void setEmitorActive(boolean active);    
     public boolean getEmitorActive();

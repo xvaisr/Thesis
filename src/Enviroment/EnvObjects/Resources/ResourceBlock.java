@@ -33,7 +33,12 @@ public class ResourceBlock extends DetectableObjectPrototype
     
     private final int INIT_BLOCK_HP = 100;
     private final int INIT_BLOCK_CONTAINS = 25;
+    private final int INIT_DROPLET_CONTAINS = 16;
     private final int INIT_CORNERS = 20;
+    
+    private final int SMELL_DISTANCE = 65;
+    private final int WATTER_SMELL_STRENGHT = 30;
+    private final int FOOD_SMELL_STRENGHT = 75;
     
     // resource block related
     private final ResourceTypes type;
@@ -76,23 +81,40 @@ public class ResourceBlock extends DetectableObjectPrototype
         this.type = type;
         this.init();
     }
-
     
     private void init() {
         // Drawable object values
         this.color = Color.DARK_GRAY; // color will be redefined form outside
         this.painter = null;
         
+        // visibility emitor
+        VisualEmitor ve = new VisualEmitor(this);
+        ve.setEmitorActive(true);
+        /*
+           setting up strenght ad radius of visual emitor is not necesary
+            - different implementation of detection
+         */
+        
+        // smell emitor
+        SmellEmitor se;
+        se = new SmellEmitor(this);
+        se.setDecreasePercentage(0); // cannot decrease
+        // how it smells and how strong is going to be set later
+        se.setDispersionRadius(SMELL_DISTANCE);
+        se.setEmitorActive(true);
+        
+        // resource block related, type related
         ResourceTypes rtype = this.getResourceType();
         if (rtype == ResourceTypes.water) {
             this.setColor(WATER_COLOR);
+            se.setEmitorStrength(WATTER_SMELL_STRENGHT);
+            this.contains = INIT_DROPLET_CONTAINS;
         }
         else if (rtype == ResourceTypes.food) {
             this.setColor(FOOD_COLOR);
+            se.setEmitorStrength(FOOD_SMELL_STRENGHT);
+            this.contains = INIT_BLOCK_CONTAINS;
         }
-        
-        // resource block related
-        this.contains = INIT_BLOCK_CONTAINS;
         
         // Destructable object values
         this.baseHealth = INIT_BLOCK_HP;
@@ -105,10 +127,6 @@ public class ResourceBlock extends DetectableObjectPrototype
         s.addVertex(- INIT_CORNERS, - INIT_CORNERS);
         s.addVertex(- INIT_CORNERS, INIT_CORNERS);
         this.setNewShape(s);
-        
-        // Emitors
-        this.setEmitor(new VisualEmitor(this));
-        this.setEmitor(new SmellEmitor(this));
     }
     
     
@@ -203,7 +221,13 @@ public class ResourceBlock extends DetectableObjectPrototype
     
     @Override
     public void setColor(Color c) {
+        if (c == null) {
+            return;
+        }
+        
         this.color = c;
+        SmellEmitor se = (SmellEmitor) this.getEmitor(SmellEmitor.class);
+        se.setEmitorSmell(this.color.getRGB());
     }
 
     @Override

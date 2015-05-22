@@ -10,8 +10,9 @@ import Agents.Team.Team;
 import Enviroment.EnvObjects.Obsticles.Obsticle;
 import Enviroment.EnvObjects.ObjectParts.Shape;
 import Enviroment.Model;
-import Graphics.UserInterface;
-import Graphics.UserInterfaceDebug;
+import GraphicInterface.MenuInterfacce;
+import GraphicInterface.UserInterface;
+import GraphicInterface.UserInterface;
 import java.awt.Color;
 import java.util.ArrayList;
 // import KeyEventFixer.KeyEventsFixer;
@@ -90,7 +91,8 @@ public class Main {
         */
         
         // start up user interface
-        UserInterfaceDebug ui = new UserInterfaceDebug();
+        UserInterface ui = UserInterface.getInstance();
+        // MenuInterfacce ui = MenuInterfacce.getInstance();
         Thread t  = new Thread(ui);
         t.start();
  // */      

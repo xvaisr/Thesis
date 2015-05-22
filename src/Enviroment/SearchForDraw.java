@@ -9,8 +9,8 @@ package Enviroment;
 import Enviroment.EnvObjects.GameObject;
 import Enviroment.EnviromentalMap.Chunk;
 import Enviroment.EnviromentalMap.ExtendedMapInterface;
-import Graphics.Input.GameObjectCasher;
-import Graphics.ViewAndDraw.ViewSpaceHolder;
+import GraphicInterface.Input.GameObjectCasher;
+import GraphicInterface.InterfaceViews.ViewSpaceHolder;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 

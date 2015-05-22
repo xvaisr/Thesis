@@ -17,6 +17,7 @@ import Enviroment.EnvObjFeatures.DetectableGameObject;
 import static Enviroment.EnvObjFeatures.DetectableGameObject.EMITORS_INITIAL_CAPACITY;
 import Enviroment.EnvObjFeatures.DrawableGameObject;
 import Enviroment.EnvObjFeatures.Emitors.Emitor;
+import Enviroment.EnvObjFeatures.Emitors.SmellEmitor;
 import Enviroment.EnvObjFeatures.Emitors.SoundEmitor;
 import Enviroment.EnvObjFeatures.Emitors.VisualEmitor;
 import Enviroment.EnvObjFeatures.MoveableGameObject;
@@ -52,15 +53,16 @@ public class Agent extends GameObjectPrototype implements SensingGameObject,
                 PoweredGameObject, DrawableGameObject, AgentInterface
 {
     // Private senses constants
-    private final int SIGHT_RANGE = 75;             // sight detection range
-    private final int SMELL_RANGE = 400;            // efective smell detection range
-    private final int SMELL_DYNAMIC_RANGE = 800;    // smell detection range for dynamic map
-    private final int HEARING_RANGE = 250;          // efective hearing range
-    private final int HEARING_DYNAMIC_RANGE = 500;  // hearing range for dynamic map
+    private static final int SIGHT_RANGE = 75;             // sight detection range
+    private static final int SMELL_RANGE = 400;            // efective smell detection range
+    private static final int SMELL_DYNAMIC_RANGE = 800;    // smell detection range for dynamic map
+    private static final int HEARING_RANGE = 250;          // efective hearing range
+    private static final int HEARING_DYNAMIC_RANGE = 500;  // hearing range for dynamic map
     
     // private emitors constants
-    private final int SOUND_RANGE = 250;        // broadcast
-    private final int COMUNICATION_RANGE = 60;  // comunication with friends
+    private static final int SOUND_RANGE = 250;        // broadcast
+    private static final int COMUNICATION_RANGE = 60;  // comunication with friends
+    private static final int SMELL_EMITION = 10;       // for recognizing 
     
     // Agent himself
     private volatile String name;
@@ -160,6 +162,7 @@ public class Agent extends GameObjectPrototype implements SensingGameObject,
         sh.addVertex(-4 , -4);
         sh.addVertex(-6, 0);
         sh.addVertex(-4, 4);
+        this.setNewShape(sh);
         
         // Agents values
         this.name = DEFAULT_AGENT_NAME;
@@ -194,10 +197,23 @@ public class Agent extends GameObjectPrototype implements SensingGameObject,
         // sound 
         e = new SoundEmitor(this);
         e.setEmitorActive(false);
-        e.setEmitorRange(COMUNICATION_RANGE);
+        e.setEmitorStrength(COMUNICATION_RANGE);
+        e.setDispersionRadius(COMUNICATION_RANGE);
         // visibility
         e = new VisualEmitor(this);
         e.setEmitorActive(true);
+        /*
+           setting up strenght ad radius of visual emitor is not necesary
+            - different implementation of detection
+         */
+        // smell
+        SmellEmitor se;
+        se = new SmellEmitor(this);
+        se.setDecreasePercentage(0); // cannot decrease
+        se.setEmitorSmell(this.color.getRGB());
+        se.setEmitorStrength(SMELL_EMITION);
+        se.setDispersionRadius(SMELL_EMITION);
+        se.setEmitorActive(true);
         
         Sense s;
         // hearing
@@ -426,7 +442,10 @@ public class Agent extends GameObjectPrototype implements SensingGameObject,
             succes = this.getMapContainer().getMap()
                .moveGameObjectTo(this, (cp.x + (ns.x  * dir.x)) , (cp.y + (ns.y  * dir.y)));
         }
-        Model.setCurrnetChunk((Chunk) this.getMapContainer());
+        
+        // dobug purposes only
+        // Model.setCurrnetChunk((Chunk) this.getMapContainer());
+        
         return succes;
     }
     
@@ -643,7 +662,13 @@ public class Agent extends GameObjectPrototype implements SensingGameObject,
     // <editor-fold defaultstate="collapsed" desc="DrawableGameObject interface">
     @Override
     public void setColor(Color c) {
+        if (c == null) {
+            return;
+        }
+        
         this.color = c;
+        SmellEmitor se = (SmellEmitor) this.getEmitor(SmellEmitor.class);
+        se.setEmitorSmell(this.color.getRGB());
     }
 
     @Override
