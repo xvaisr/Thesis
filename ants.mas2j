@@ -1,0 +1,11 @@
+MAS ants
+{
+
+	infrastructure: Centralised
+
+	environment: Enviroment.EnvirometControler
+	
+//	executionControl: jason.control.ExecutionControl
+	
+		
+}

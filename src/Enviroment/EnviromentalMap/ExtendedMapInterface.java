@@ -6,6 +6,7 @@
 
 package Enviroment.EnviromentalMap;
 
+import Enviroment.EnvObjFeatures.DetectableGameObject;
 import Enviroment.EnvObjFeatures.Senses.Sense;
 import Enviroment.EnvObjects.GameObject;
 import Enviroment.EnviromentalMap.Chunk;
@@ -25,9 +26,9 @@ public interface ExtendedMapInterface extends MapInterface {
     public ArrayList<GameObject> getGameObjectsAtStaticMap(Point p);
     public ArrayList<GameObject> getGameObjectsAtDynamicMap(Point p);
     
-    public ArrayList<GameObject> getDetectedObjects(Sense s);
-    public ArrayList<GameObject> getDetectedObjectsStaticMap(Sense s);
-    public ArrayList<GameObject> getDetectedObjectsDynamicMap(Sense s);
+    public ArrayList<DetectableGameObject> getDetectedObjects(Sense s);
+    public ArrayList<DetectableGameObject> getDetectedObjectsStaticMap(Sense s);
+    public ArrayList<DetectableGameObject> getDetectedObjectsDynamicMap(Sense s);
     
     public ArrayList<Chunk> getChunksInArea(Rectangle r);
     

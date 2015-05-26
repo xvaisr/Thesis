@@ -11,6 +11,7 @@ package systemactions;
 
 import Enviroment.EnvObjects.Agents.Agent;
 import Enviroment.EnvObjects.GameObject;
+import Enviroment.Model;
 import jason.JasonException;
 import jason.asSemantics.TransitionSystem;
 import jason.asSemantics.Unifier;
@@ -27,8 +28,8 @@ public class isWeaker extends SystemAction {
     {
         GameObject objectMe = null, objectEnemy = null;
         try {
-            objectMe = Enviroment.Model.getAgentByName(terms[0].toString());
-            objectEnemy = Enviroment.Model.getAgentByName(terms[1].toString());
+            objectMe = Model.getAgentByName(terms[0].toString());
+            objectEnemy = Model.getAgentByName(terms[1].toString());
         }
         catch (ArrayIndexOutOfBoundsException e)  {
             throw new JasonException("The internal action ’getEscapeDirection’"+

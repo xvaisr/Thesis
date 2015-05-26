@@ -16,6 +16,7 @@ import java.awt.Point;
 public class LineSegment {
     private final Point k, l, u, no;
     public double size;
+    private LineSegment kAttached, lAttached;
 
     public LineSegment(Point k, Point l) {
         this.k = k;
@@ -70,9 +71,8 @@ public class LineSegment {
         // if u.v == 0  vector are perpendicular
         return result == 0;
     }
-
         
-    public boolean getIntersect(LineSegment seg) {
+    public Point getIntersection(LineSegment seg) {
         Point n, m;     // normal vectors;
         n = this.getNormalVector();
         m = seg.getNormalVector();    
@@ -80,7 +80,7 @@ public class LineSegment {
         double denominator = n.x*m.y - n.y*m.x;
             
         if (denominator == 0) {
-            return false;
+            return null;
         }
             
         // derived from implicit equations of line
@@ -98,7 +98,7 @@ public class LineSegment {
         yd = Math.round(yp);
             
         Point intersector = new Point(xd.intValue(), yd.intValue());
-        return this.insideSegment(intersector) && seg.insideSegment(intersector);
+        return intersector;
     }
 
     public boolean insideSegment(Point intersector) {
@@ -114,6 +114,30 @@ public class LineSegment {
         
         return xAxis && yAxis;
     }
-        
+
+    public boolean getIntersect(LineSegment seg) {
+        Point intersector = this.getIntersection(seg);
+        if (intersector == null) {
+            return false;
+        }
+        return (this.insideSegment(intersector) && seg.insideSegment(intersector));
+    }
+    
+    public void attacheLineSegment(LineSegment seg) {
+        if (seg.getK().equals(this.getL())) {
+            this.lAttached = seg;
+        }
+        else if (seg.getL().equals(this.getK())) {
+            this.kAttached = seg;
+        }
+    }
+    
+    public LineSegment getLAttached() {
+        return this.lAttached;
+    }
+    
+    public LineSegment getKAttached() {
+        return this.kAttached;
+    }
         
 }

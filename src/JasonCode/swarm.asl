@@ -1,5 +1,71 @@
 // Agent ant in project ants
 
+!chooseRole.
+
++!chooseRole()
+  : ?atHome
+  & shouldWait
+  <-
+  +role(keeper);
+  +startWaitingFor(recruting).
+  
++!chooseRole()
+  : ?atHome
+  & shouldScout
+  <-
+  +role(scout).
+  +startSearching.
+
+
+
+
+/* crawling plan */
+
+
+/* crawling plans */
+
++!startRandomCrawling
+  : true
+  <-
+  +crawlRandomly.
+  
+
++!crawlRandomly
+  : Direction
+  <-
+  systemactions.getRandom
+  crawlShortDistance.
+  
+
+
++!crawlInDirection(Direction)
+  : wall(Direction, close)
+  | wall(Direction, closing)    
+  <-
+  goToVisibleAvoidPoint
+  .wait(+finishedMovement)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Initial goals */
 !check_percepts.
 

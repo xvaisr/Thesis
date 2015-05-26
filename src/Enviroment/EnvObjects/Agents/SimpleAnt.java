@@ -58,6 +58,5 @@ public class SimpleAnt extends Agent {
     
     public void collect() {
     }
-    
-    public 
+
 }

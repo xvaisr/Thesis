@@ -6,11 +6,16 @@
 
 package Enviroment.EnvObjFeatures.Senses;
 
+import Enviroment.EnvObjFeatures.DetectableGameObject;
 import Enviroment.EnvObjFeatures.Emitors.Emitor;
+import Enviroment.EnvObjFeatures.Emitors.SmellEmitor;
 import Enviroment.EnvObjFeatures.Emitors.SoundEmitor;
 import Enviroment.EnvObjFeatures.SensingGameObject;
 import Enviroment.EnviromentalMap.CollisionDetector;
+import Enviroment.EnviromentalMap.Compas;
 import java.awt.Point;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  *
@@ -29,12 +34,11 @@ public class Hearing extends AbstractSense {
     }
     
     @Override
-    public boolean canPrecive(Emitor e) {
-        boolean precept = super.canPrecive(e);
-        
-        // if can't be detected, aditional check is useless
-        if(!precept) {
-            return precept;
+    public int preceptionStrenght(Emitor e) {
+        if ((e == null) || !e.getEmitorActive() // or there is mistake in code
+                        || (e.getClass() != this.getPreciveable()))
+        {
+            return NO_PRECEPT_STRENGHT;
         }
         
         Point o, p;
@@ -49,6 +53,29 @@ public class Hearing extends AbstractSense {
         int threshold = AUDIBILITY_THRESHOLD;
         
         // is it loud enough ?
-        return precept && ((volume + sensStrght - threshold) > 0);
+        return (volume + sensStrght - threshold);
     }
+
+    @Override
+    public List<String> getPercepts() {
+        LinkedList<String> preceptList = new LinkedList();
+        for (DetectableGameObject obj : this.getCache()) {
+            SoundEmitor soundEmitor = (SoundEmitor) obj.getEmitor(SoundEmitor.class);
+            String direction, sound;
+            int strenght;
+            Point p, e;
+            
+            sound = soundEmitor.getMessage();
+            p = this.getPreceptor().getPosition();
+            e = obj.getPosition();
+            direction = Compas.getDirectionName(e, p);
+            strenght = this.preceptionStrenght(soundEmitor);
+            
+            String preception = "sound(" + sound + ", " + direction + ", " + strenght + ")";
+            preceptList.add(preception);
+        }
+        return preceptList;
+    }
+
+
 }

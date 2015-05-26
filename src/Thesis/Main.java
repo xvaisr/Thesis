@@ -7,7 +7,7 @@
 package Thesis;
 
 import Agents.Team.Team;
-import Enviroment.EnvObjects.Obsticles.Obsticle;
+import Enviroment.EnvObjects.Obstacles.Obstacle;
 import Enviroment.EnvObjects.ObjectParts.Shape;
 import Enviroment.Model;
 import GraphicInterface.MenuInterfacce;
@@ -70,7 +70,7 @@ public class Main {
         s.addVertex(0, 40);
         s.addVertex(-40, 20);
         
-        Obsticle ob = new Obsticle(400, 400);
+        Obstacle ob = new Obstacle(400, 400);
         ob.setNewShape(s);
         ob.setPainter(Model.getPainter(Model.POLYGON_PAINTER_INDEX));
         
@@ -83,7 +83,7 @@ public class Main {
         s.addVertex(20, -20);
         s.addVertex(-40, 0);
         
-        ob = new Obsticle(420, 400);
+        ob = new Obstacle(420, 400);
         ob.setNewShape(s);
         ob.setPainter(Model.getPainter(Model.POLYGON_PAINTER_INDEX));
         

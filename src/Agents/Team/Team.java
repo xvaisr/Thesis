@@ -42,6 +42,9 @@ public class Team {
         this.members = new ArrayList();
         this.members.ensureCapacity(MEMBERS_MIN);
         
+        this.pathHillAI = DEFAULT_HILL_AI;
+        this.pathAntAI = DEFAULT_ANT_AI;
+        
         this.attak = DEFAULT_ATTAK;
         this.armour = DEFAULT_ARMOR;
         this.speed = DEFAULT_SPEED;
@@ -118,6 +121,28 @@ public class Team {
 
     public int getSpeed() {
         return speed;
+    }
+
+    public String getAntAiPath() {
+        return this.pathAntAI;
+    }
+    
+    public void setAntAiPath(String path) {
+        if (path == null || path.isEmpty())  {
+            return;
+        }
+        this.pathAntAI = path;
+    }
+    
+    public String getHillAiPath() {
+        return this.pathHillAI;
+    }
+    
+    public void setHillAiPath(String path) {
+        if (path == null || path.isEmpty())  {
+            return;
+        }
+        this.pathHillAI = path;
     }
     
     

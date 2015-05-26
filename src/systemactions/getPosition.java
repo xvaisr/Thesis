@@ -11,6 +11,7 @@ package systemactions;
 
 import Enviroment.EnvObjects.Agents.Agent;
 import Enviroment.EnvObjects.GameObject;
+import Enviroment.Model;
 import jason.JasonException;
 import jason.asSemantics.TransitionSystem;
 import jason.asSemantics.Unifier;
@@ -30,7 +31,7 @@ public class getPosition extends SystemAction {
     {
     	GameObject object = null;
         try {
-            object = Enviroment.Model.getAgentByName(terms[0].toString());
+            object = Model.getAgentByName(terms[0].toString());
         }
         catch (ArrayIndexOutOfBoundsException e)  {
             throw new JasonException("The internal action ’getPosition’"+

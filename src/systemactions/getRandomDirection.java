@@ -15,6 +15,7 @@ import Enviroment.EnvObjFeatures.Senses.Sight;
 import Enviroment.EnvObjects.Agents.Agent;
 import Enviroment.EnvObjects.GameObject;
 import Enviroment.EnviromentalMap.Compas;
+import Enviroment.Model;
 import jason.JasonException;
 import jason.asSemantics.TransitionSystem;
 import jason.asSemantics.Unifier;
@@ -36,7 +37,7 @@ public class getRandomDirection extends SystemAction {
     {
 	GameObject object = null;
         try {
-            object = Enviroment.Model.getAgentByName(terms[0].toString());
+            object = Model.getAgentByName(terms[0].toString());
         }
         catch (ArrayIndexOutOfBoundsException e)  {
             throw new JasonException("The internal action ’getRandomDirection’"+
@@ -62,7 +63,7 @@ public class getRandomDirection extends SystemAction {
         // look for friends to follow
         Sense sight = ag.getSense(Sight.class);
         ArrayList<GameObject> objectList;
-        objectList = Enviroment.Model.getCurrentMap()
+        objectList = Model.getCurrentMap()
                           .getGameObjectsInArea(sight.getDetectionArea());
         
         Agent friend = null;

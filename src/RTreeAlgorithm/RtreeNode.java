@@ -8,7 +8,6 @@ package RTreeAlgorithm;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.awt.Rectangle;
-import Enviroment.EnviromentalMap.Chunk;
 
 /**
  *

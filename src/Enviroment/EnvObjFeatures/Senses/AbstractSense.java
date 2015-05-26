@@ -8,9 +8,16 @@ package Enviroment.EnvObjFeatures.Senses;
 import Enviroment.EnvObjFeatures.DetectableGameObject;
 import Enviroment.EnvObjFeatures.Emitors.Emitor;
 import Enviroment.EnvObjFeatures.SensingGameObject;
+import Enviroment.EnvObjects.GameObject;
 import Enviroment.EnviromentalMap.CollisionDetector;
+import Enviroment.EnviromentalMap.ExtendedMapInterface;
+import Enviroment.EnviromentalMap.MapContainer;
+import Enviroment.EnviromentalMap.MapInterface;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -18,14 +25,34 @@ import java.awt.Rectangle;
  */
 public abstract class AbstractSense implements Sense {
     private SensingGameObject preceptor;
+    private final ArrayList<DetectableGameObject> cache;
     private int range;
     private int dynamicRange;
     
     public AbstractSense(SensingGameObject preceptor) {
+        if (preceptor == null) {
+            throw new NullPointerException("Preceptor cannot be Null!");
+        }
+        this.cache = new ArrayList();
         this.preceptor = preceptor;
         this.range = 0;
         this.dynamicRange = 0;
+        this.attacheToPreceptor();
+    }
+    
+    private void attacheToPreceptor() {
         this.preceptor.setSense(this);
+    }
+    
+    private boolean haveAccesToMap() {
+        if(this.preceptor == null) {
+            return false;
+        }
+        MapContainer container = this.getPreceptor().getMapContainer();
+        if(container == null || container.getMap() == null) {
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -112,12 +139,50 @@ public abstract class AbstractSense implements Sense {
     }
     
     @Override
+    public void updatePreception() {
+        if (!this.haveAccesToMap()) {
+            return;
+        }
+        
+        ArrayList<DetectableGameObject> detected;
+        
+        MapInterface map = this.getPreceptor().getMapContainer().getMap();
+        if (!(map instanceof ExtendedMapInterface)) {
+            detected = new ArrayList();
+            
+            ArrayList<GameObject> objects;
+            objects = map.getGameObjectsInArea(this.getDetectionArea());
+            for (GameObject go : objects) {
+                if(go instanceof DetectableGameObject) {
+                    detected.add((DetectableGameObject) go);
+                }
+            }
+        }
+        else if (map instanceof ExtendedMapInterface) {
+            detected = ((ExtendedMapInterface) map).getDetectedObjectsStaticMap(this);
+        }
+        else {
+            detected = new ArrayList();
+        }
+        
+        synchronized(this.cache) {
+            this.cache.clear();
+            this.cache.addAll(detected);
+        }
+    }
+    
+    @Override
     public boolean canPrecive(Emitor e) {
+        return this.preceptionStrenght(e) > 0;
+    }
+    
+    @Override
+    public int preceptionStrenght(Emitor e) {
         // if it is emitor of diferent sense, it is deactivated, 
         if ((e == null) || !e.getEmitorActive() // or there is mistake in code
                         || (e.getClass() != this.getPreciveable()))
         {
-            return false;
+            return NO_PRECEPT_STRENGHT;
         }
         
         /* 
@@ -125,13 +190,13 @@ public abstract class AbstractSense implements Sense {
            originator cannot be precived by preceptor.
          */
         if (!this.getDetectionArea().intersects(e.getDispersionArea())) {
-            return false;
+            return NO_PRECEPT_STRENGHT;
         }
         
         // Nonexisting object cannot be detected
         DetectableGameObject originator = e.getOriginator();
         if (originator == null) {
-            return false;
+            return NO_PRECEPT_STRENGHT;
         }
         
         Point o, p;
@@ -140,7 +205,25 @@ public abstract class AbstractSense implements Sense {
         
         // make sure that range circels intersect
         int distance = CollisionDetector.getDistance(o, p);
-        return (distance <= (this.getSenseRange() + e.getDispersionRadius()));
+        return (distance - (this.getSenseRange() + e.getDispersionRadius()));
     }
     
+    public ArrayList<DetectableGameObject> getCache() {
+        return (ArrayList<DetectableGameObject>) this.cache.clone();
+    }
+    
+    public ArrayList<DetectableGameObject> getDynamicMapObjects() {
+        ArrayList<DetectableGameObject> detected;
+        
+        if (!this.haveAccesToMap()) {
+            return new ArrayList();
+        }
+        
+        MapInterface map = this.getPreceptor().getMapContainer().getMap();
+        if (!(map instanceof ExtendedMapInterface)) {
+            return new ArrayList();
+        }
+        
+        return ((ExtendedMapInterface) map).getDetectedObjectsDynamicMap(this);
+    }
 }

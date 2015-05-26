@@ -6,19 +6,19 @@
 
 package Enviroment;
 
+import Enviroment.EnvObjects.Agents.Agent;
 import Agents.Team.Team;
 import jason.environment.Environment; // TimeSteppedEnvironment;
-import Enviroment.EnvObjects.Agents.*;
 import Agents.Actions.AgentAction;
-import Enviroment.EnvObjFeatures.Senses.Sense;
 import Enviroment.EnvObjects.GameObject;
-import Enviroment.EnvObjects.Resources.ResourceBlock;
-import GraphicInterface.MenuInterfacce;
 import GraphicInterface.UserInterface;
 import jason.asSyntax.Literal;
 import jason.asSyntax.Structure;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.logging.Level;
 
 /**
  *
@@ -27,6 +27,7 @@ import java.util.HashMap;
 public class EnvirometControler extends Environment {
     
     private HashMap<String, AgentAction> actions;
+    private List<String> architecture = new ArrayList<String>();
 
     public EnvirometControler() {
     }
@@ -35,22 +36,32 @@ public class EnvirometControler extends Environment {
     
     @Override
     public void init(String[] args) {
+        // this is supposed to be required
+        this.architecture.add("jason.architecture.AgArch");
+        
+        // attach this to a Model
+        Model.getInstance().setEnviromentalControler(this);
+        
         // init actions map
         this.actions = new HashMap();
         this.initActions();
         
-        // setup connection to model
-        Model.getInstance().setEnviromentalControler(this);
+        // first setup teams
+        Model.addTeam(new Team(Color.red));
         
+        // after teams are set up, map can be created
+        Model.setNewMap(2, 2);
         // start up user unterface
-        // UserInterface ui = UserInterface.getInstance();
-        MenuInterfacce ui = MenuInterfacce.getInstance();
-        Thread t  = new Thread(ui);
+        UserInterface ui = UserInterface.getInstance();
+        // MenuInterfacce ui = MenuInterfacce.getInstance();
+        Thread t = new Thread(ui);
         t.start();
     }
     
     @Override
     public boolean executeAction(String agent_name, Structure action) {
+        String msg = agent_name + " doing: " + action.toString();
+        this.getLogger().info(msg);
         GameObject ag = Model.getAgentByName(agent_name);
         AgentAction ac = this.actions.get(action.getFunctor());
         if (ac != null) {
@@ -61,45 +72,22 @@ public class EnvirometControler extends Environment {
         return false;
     }
        
-    protected void updateAgsPercept() {
-        ArrayList<Team> teams = Model.getTeamList();
-        for (Team team : teams) {
-            ArrayList<Agent> agentList = team.getMemberList();
-            for (Agent agent : agentList) {
-                this.updateAgPercept(agent);
-            }
+    public boolean addAgent(Agent ag) {
+        try {
+            String ai;
+            ai = this.getClass().getResource(ag.getTeam().getAntAiPath()).toExternalForm();
+            
+            this.getEnvironmentInfraTier().getRuntimeServices()
+                .createAgent(ag.getName(), ai, null, this.architecture, null, null);			
+        }    
+	catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
-        
-    }
-    
-    private void updateAgPercept(Agent ag) {
-        ArrayList<Sense> senseList = ag.getSenseList();
-        for (Sense sense : senseList) {
-            this.updateAgentPreceptViaSense(ag, sense);
-        }
+        return true;
     }
     
     
-    public void updateAgentPreceptViaSense(Agent ag, Sense s) {
-        ArrayList<GameObject> objectList;
-        objectList = Model.getCurrentMap().getDetectedObjects(s);
-        for (GameObject gameObject : objectList) {
-            String name;
-            if (gameObject instanceof Agent) {
-                name = ((Agent) gameObject).getName();
-            }
-            else if (gameObject instanceof ResourceBlock) {
-                name = ((ResourceBlock) gameObject).getResourceType().name();
-            }
-            name = gameObject.getClass().getSimpleName();
-            this.addBelief(ag.getName(), name);
-        }
-    }
-    
-/*    @Override
-    protected void stepFinished(int step, long time, boolean timeout) {
-    
-    } */
     
 /* Own aditional methods */    
     

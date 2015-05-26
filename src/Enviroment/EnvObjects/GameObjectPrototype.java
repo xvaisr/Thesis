@@ -10,7 +10,6 @@ import Enviroment.EnvObjects.GameObject;
 import Enviroment.EnvObjects.ObjectParts.LineSegment;
 import Enviroment.EnvObjects.ObjectParts.Shape;
 import Enviroment.EnviromentalMap.MapContainer;
-import RTreeAlgorithm.RtreeNode;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -76,12 +75,28 @@ public class GameObjectPrototype implements GameObject {
                 if (size < 2) {
                     return;
                 }
-
+                
+                LineSegment current = null, prev = null;
                 for (int i = 0; i < size; i++) {
                     Point k, l;
                     k = this.vertices.get(i);
                     l = this.vertices.get((i + 1) % size);
-                    segList.add(new LineSegment(k, l));
+                    current = new LineSegment(k, l);
+                    segList.add(current);
+                    
+                    if (prev != null) {
+                        current.attacheLineSegment(prev);
+                        prev.attacheLineSegment(current);
+                    }
+                    
+                    prev = current;
+                }
+                if (segList.size() > 2) {
+                    current =  segList.get(0);
+                    if ((prev != null) && (prev != current)) {
+                        current.attacheLineSegment(prev);
+                        prev.attacheLineSegment(current);
+                    }
                 }
             }
             this.segments.addAll(segList);

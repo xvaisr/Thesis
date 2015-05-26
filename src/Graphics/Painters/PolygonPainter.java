@@ -57,13 +57,26 @@ public class PolygonPainter implements Painter {
         ny = aov.height - r.y - r.height;       
         r.translate(0, (ny - r.y)); // shif rectangle to it's correct position
  
-        g.setColor(Color.BLACK);
-        String s = "id: " + obj.getID();
-        g.drawString(s, r.x, (r.y + r.height/2));
+        // g.setColor(Color.BLACK);
+        // String s = "id: " + obj.getID();
+        // g.drawString(s, r.x, (r.y + r.height/2));
 
         g.setColor(Color.red);
         g.drawRect(r.x, r.y, r.width, r.height);
         
+        Point v = obj.getPosition();
+        v.translate(-aov.x, -aov.y); // shift point to window from original place
+            
+            cy = v.y;
+            ny = (aov.height - cy);
+            v.translate(0, (ny - cy)); // switch y-axis direction 
+        
+        r = new Rectangle(v);
+        r.grow(3, 3);
+        
+        
+        g.fillRect(r.x, r.y, r.width, r.height);
+       
         // */
     }
     

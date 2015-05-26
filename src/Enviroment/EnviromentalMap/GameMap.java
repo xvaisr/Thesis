@@ -149,7 +149,7 @@ public class GameMap implements ExtendedMapInterface, MapContainer {
             detectable = (DetectableGameObject) o;
             success = this.addDetectableObject(detectable, detectable.getPosition());
         }
-        
+                
         /* for debug purposes only
            if (success) {
                this.addedObjects.add(o);
@@ -401,8 +401,8 @@ public class GameMap implements ExtendedMapInterface, MapContainer {
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Map search related methods">
-    private ArrayList<GameObject> findObjectsInMap(Rectangle area, Rtree<Emitor> map) {
-        ArrayList<GameObject> objectList = new ArrayList();
+    private ArrayList<DetectableGameObject> findObjectsInMap(Rectangle area, Rtree<Emitor> map) {
+        ArrayList<DetectableGameObject> objectList = new ArrayList();
         ArrayList<Emitor> emitorList;
         
         emitorList = map.Find(area);
@@ -413,13 +413,13 @@ public class GameMap implements ExtendedMapInterface, MapContainer {
         return objectList;
     }
     
-    private ArrayList<GameObject> findObjectsInMap(Point p, Rtree<Emitor> map) {
-        ArrayList<GameObject> objectList = new ArrayList();
+    private ArrayList<DetectableGameObject> findObjectsInMap(Point p, Rtree<Emitor> map) {
+        ArrayList<DetectableGameObject> objectList = new ArrayList();
         ArrayList<Emitor> emitorList;
         
         emitorList = map.Find(p);
         for (Emitor emitor : emitorList) {
-            objectList.add(emitor.getOriginator());
+            objectList.add(emitor. getOriginator());
         }
         
         return objectList;
@@ -505,20 +505,26 @@ public class GameMap implements ExtendedMapInterface, MapContainer {
     }
     
     @Override
-    public ArrayList<GameObject> getDetectedObjects(Sense s) {
-        ArrayList<GameObject> objectList;
+    public ArrayList<DetectableGameObject> getDetectedObjects(Sense s) {
+        ArrayList<DetectableGameObject> objectList;
         // take objects form static maps
         objectList = this.getDetectedObjectsStaticMap(s);
         
         // add objects from dynamic map
         objectList.addAll(this.getDetectedObjectsDynamicMap(s));
         
+        // remove object which is trying to sense so it won't sense itself
+        if (s.getPreceptor() instanceof DetectableGameObject) {
+            DetectableGameObject self = ((DetectableGameObject) s.getPreceptor());
+            objectList.remove(self);
+        }
+        
         return objectList;
     }
     
     @Override
-    public ArrayList<GameObject> getDetectedObjectsStaticMap(Sense s) {
-        ArrayList<GameObject> objectList;
+    public ArrayList<DetectableGameObject> getDetectedObjectsStaticMap(Sense s) {
+        ArrayList<DetectableGameObject> objectList;
         Rtree<Emitor> map = null;
         synchronized(this.emitorMaps) {
             map = this.emitorMaps.get(s.getPreciveable());
@@ -529,14 +535,20 @@ public class GameMap implements ExtendedMapInterface, MapContainer {
         }
         
         objectList = this.findObjectsInMap(s.getDetectionArea(), map);
+        
+        // remove object which is trying to sense so it won't sense itself
+        if (s.getPreceptor() instanceof DetectableGameObject) {
+            DetectableGameObject self = ((DetectableGameObject) s.getPreceptor());
+            objectList.remove(self);
+        }
+        
         return objectList;
     }
     
     @Override
-    public ArrayList<GameObject> getDetectedObjectsDynamicMap(Sense s) {
-        ArrayList<GameObject> objectList;
+    public ArrayList<DetectableGameObject> getDetectedObjectsDynamicMap(Sense s) {
+        ArrayList<DetectableGameObject> objectList = new ArrayList();
         // take objects form static maps
-        objectList = this.dynamicMap.getGameObjectsInArea(s.getDynamicDetectionArea());
         
         // remove all objects from dynamic map which are not detectable by given
         for (GameObject gameObject : objectList) {  // sense
@@ -546,18 +558,23 @@ public class GameMap implements ExtendedMapInterface, MapContainer {
             if (gameObject instanceof DetectableGameObject) {
                 detectable = (DetectableGameObject) gameObject;
             }
+            else {
+                continue;
+            }
                         
-            if ((detectable != null) &&
-                (detectable.getHasEmitor(s.getPreciveable())) )
+            if (detectable.getHasEmitor(s.getPreciveable()))
             {
                 // If given object is preciveable by given sense, skip removing part
                 if (s.canPrecive(detectable.getEmitor(s.getPreciveable()))) {
-                    continue;
+                    objectList.add(detectable);;
                 }
             }
-            
-            // if we don't have detectable instance or it can't be detected,
-            objectList.remove(gameObject);   // remove object from tghe list
+        }
+        
+        // remove object which is trying to sense so it won't sense itself
+        if (s.getPreceptor() instanceof DetectableGameObject) {
+            DetectableGameObject self = ((DetectableGameObject) s.getPreceptor());
+            objectList.remove(self);
         }
         
         return objectList;

@@ -6,6 +6,7 @@
 
 package Agents.Actions;
 
+import Enviroment.EnvObjFeatures.DetectableGameObject;
 import Enviroment.EnvObjFeatures.Senses.Sense;
 import Enviroment.EnvObjects.Agents.Agent;
 import Enviroment.EnvObjects.GameObject;
@@ -39,7 +40,7 @@ public class update_percepts extends AgentAction {
     }
     
     public void updateAgentPreceptViaSense(Agent ag, Sense s) {
-        ArrayList<GameObject> objectList;
+        ArrayList<DetectableGameObject> objectList;
         objectList = Model.getCurrentMap().getDetectedObjects(s);
         for (GameObject gameObject : objectList) {
             String name;

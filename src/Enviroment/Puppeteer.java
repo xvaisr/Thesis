@@ -7,9 +7,11 @@
 package Enviroment;
 
 import Agents.Team.Team;
+import Enviroment.EnvObjFeatures.Senses.Sense;
 import Enviroment.EnvObjects.Agents.Agent;
-import java.awt.Point;
+import jason.asSyntax.Literal;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  *
@@ -18,7 +20,7 @@ import java.util.ArrayList;
 public class Puppeteer implements Runnable {
 
     private static final int ms2sec = 1000;
-    private static final int SPEED = 30;
+    private static final int SPEED = 20;
     
     private volatile boolean running;
     private volatile double unifiedSpeed;            // pixels distance per step
@@ -58,7 +60,7 @@ public class Puppeteer implements Runnable {
     public void run() {
         long begining, now, delta;
         boolean run = true;
-        int duration;
+        int duration, counter = 0;
         double speed;
         
         synchronized(this) {
@@ -67,6 +69,9 @@ public class Puppeteer implements Runnable {
         
         now = System.currentTimeMillis();
         while (run) {
+            if (counter > SPEED) {
+                counter = 0;
+            }
             begining = now;
             // get current unified speed, jut so speed won't change mid-step
             speed = this.unifiedSpeed; // volatile - should be safe
@@ -75,19 +80,27 @@ public class Puppeteer implements Runnable {
             ArrayList<Team> teamList = Model.getTeamList();
             for (Team t : teamList) {
                 for (Agent ag : t.getMemberList()) {
+                    LinkedList<String> percepts = new LinkedList();
                     if (ag.getPosition().equals(ag.getDestinattion())) {
-                        if (ag.getPosition().equals(new Point())) {
-                            ag.setDestination(ag.getTeam().getHill().getPosition());
-                        }
-                        else {
-                            ag.setDestination(new Point());
-                        }
+                        percepts.add("finishedMovement");
                     }
-                    ag.move(speed);
-                    // System.out.println(ag.getName() + " Position : " + ag.getPosition());
+                    else {
+                        ag.move(speed);
+                    }
+                    for(Sense s : ag.getSenseList()) {
+                        if (counter == SPEED) {
+                            s.updatePreception();
+                        }
+                        percepts.addAll(s.getPercepts());
+                    }
+                    EnvirometControler env = Model.getInstance().getEnviromentalControler();
+                    for(String str : percepts) {
+                        env.addPercept(ag.getName(), Literal.parseLiteral(str));
+                    }
                 }
             }
             
+            counter++;
             now = System.currentTimeMillis();
             
             

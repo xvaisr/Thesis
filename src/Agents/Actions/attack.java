@@ -9,6 +9,7 @@ package Agents.Actions;
 import Enviroment.EnvObjFeatures.DestructableGameObject;
 import Enviroment.EnvObjects.Agents.SimpleAnt;
 import Enviroment.EnvObjects.GameObject;
+import Enviroment.Model;
 import jason.asSyntax.Term;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class attack extends AgentAction {
         }
         
         ant = ((SimpleAnt) ag);
-        GameObject t = Enviroment.Model.getAgentByName(terms.get(0).toString());
+        GameObject t = Model.getAgentByName(terms.get(0).toString());
         
         if (!(t instanceof DestructableGameObject)) {
             return false;

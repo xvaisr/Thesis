@@ -16,19 +16,21 @@ import java.util.HashMap;
  */
 public class Compas {
     
-    public static String N = "N";   
-    public static String S = "S";
-    public static String W = "W";
-    public static String E = "E";
-    public static String NW = "NW";
-    public static String NE = "NE";
-    public static String SW = "SW";
-    public static String SE = "SE";
+    public static String N = "n";   
+    public static String S = "s";
+    public static String W = "w";
+    public static String E = "e";
+    public static String NW = "nw";
+    public static String NE = "ne";
+    public static String SW = "sw";
+    public static String SE = "se";
+    public static String Z = "z";
     
     private static Compas compas = new Compas();
+
     private final HashMap<String, Point> directions;
     private final HashMap<Point, String> names;
-    private  final ArrayList<Point> dirList;
+    private final ArrayList<Point> dirList;
     
     private Compas() {
         this.directions = new HashMap();
@@ -39,7 +41,7 @@ public class Compas {
     }
     
     private void init() {
-        Point n, s, w, e, nw, ne, sw, se;
+        Point n, s, w, e, nw, ne, sw, se, z;
         n = new Point(0, 1);
         s = new Point(0, -1);
         w = new Point(-1, 0);
@@ -48,6 +50,7 @@ public class Compas {
         nw = new Point(-1, 1);
         se = new Point(1, -1);
         sw = new Point(-1, -1);
+        z = new Point(0, 0);
         
         this.directions.put(N, n);
         this.directions.put(S, s);
@@ -57,6 +60,7 @@ public class Compas {
         this.directions.put(NW, nw);
         this.directions.put(SE, se);
         this.directions.put(SW, sw);
+        this.directions.put(Z, z);
         
         this.names.put(n, N);
         this.names.put(s, S);
@@ -66,15 +70,25 @@ public class Compas {
         this.names.put(ne, NE);
         this.names.put(se, SE);
         this.names.put(sw, SW);
+        this.names.put(z, Z);
         
         this.dirList.addAll(this.names.keySet());
+        this.dirList.remove(z);
     }
     
     public static Point getDirectionByName(String direction) {
-        return new Point(compas.directions.get(direction));
+        Point direstion = compas.directions.get(direction);
+        if (direction == null) {
+            return new Point();
+        }
+        return new Point(direstion);
     }
     
     public static String getDirectionName(Point cp, Point np) {
+        if (cp == null || np == null) {
+            return Compas.Z;
+        }
+        
         int x, y;
         x = np.x - cp.x;
         if (x < 0) x = -1;
@@ -91,5 +105,9 @@ public class Compas {
     public static Point getRandomDirection() {
         int index = Model.rand.nextInt(compas.directions.size());
         return compas.dirList.get(index);
+    }
+    
+    public static ArrayList<Point> getDIrectionList() {
+        return (ArrayList<Point>) compas.dirList.clone();
     }
 }

@@ -6,11 +6,15 @@
 
 package Enviroment.EnvObjFeatures.Senses;
 
+import Enviroment.EnvObjFeatures.DetectableGameObject;
 import Enviroment.EnvObjFeatures.Emitors.Emitor;
 import Enviroment.EnvObjFeatures.Emitors.SmellEmitor;
 import Enviroment.EnvObjFeatures.SensingGameObject;
 import Enviroment.EnviromentalMap.CollisionDetector;
+import Enviroment.EnviromentalMap.Compas;
 import java.awt.Point;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  *
@@ -28,12 +32,11 @@ public class SenseOfSmell extends AbstractSense {
     }
     
     @Override
-    public boolean canPrecive(Emitor e) {
-        boolean precept = super.canPrecive(e);
-        
-        // if can't be detected, aditional check is useless
-        if(!precept) {
-            return precept;
+    public int preceptionStrenght(Emitor e) {
+        if ((e == null) || !e.getEmitorActive() // or there is mistake in code
+                        || (e.getClass() != this.getPreciveable()))
+        {
+            return NO_PRECEPT_STRENGHT;
         }
         
         Point o, p;
@@ -47,7 +50,28 @@ public class SenseOfSmell extends AbstractSense {
         int volume = (emitStrght - distance);
         
         // is it strong enough smell ?
-        return precept && ((volume + sensStrght) > 0);
+        return (volume + sensStrght);
+    }
+
+    @Override
+    public List<String> getPercepts() {
+        LinkedList<String> preceptList = new LinkedList();
+        for (DetectableGameObject obj : this.getCache()) {
+            SmellEmitor smellEmitor = (SmellEmitor) obj.getEmitor(SmellEmitor.class);
+            String direction;
+            int smell, strenght;
+            Point p, e;
+            
+            smell = smellEmitor.getEmitorSmell();
+            p = this.getPreceptor().getPosition();
+            e = obj.getPosition();
+            direction = Compas.getDirectionName(e, p);
+            strenght = this.preceptionStrenght(smellEmitor);
+            
+            String preception = "smell(" + smell + ", " + direction + ", " + strenght + ")";
+            preceptList.add(preception);
+        }
+        return preceptList;
     }
 }
 

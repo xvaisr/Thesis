@@ -9,7 +9,7 @@ package Enviroment;
 import Agents.Team.Team;
 import Enviroment.EnvObjects.Agents.AntHill;
 import Enviroment.EnvObjects.GameObject;
-import Enviroment.EnvObjects.Obsticles.Obsticle;
+import Enviroment.EnvObjects.Obstacles.Obstacle;
 import Enviroment.EnvObjects.Resources.ResourceBlock;
 import Enviroment.EnvObjects.Resources.ResourceTypes;
 import Enviroment.EnvObjects.ObjectParts.Shape;
@@ -37,17 +37,18 @@ public class Model {
     private static final int EXPECTED_TEAM_COUNT = 4;
     private static final int EXPECTED_ACTIOONS_COUNT = 30;
     private static final int EXPECTED_PAINTER_COUNT = 5;
+    private static final int INITIAL_ANT_COUNT = 1;
     
     // Private constants for generating map - default values
     private static final int OBSTICLE_COUNT = 20;
-    private static final int MIN_VERTICES_COUNT = 3;
+    private static final int MIN_VERTICES_COUNT = 4;
     private static final int MAX_VERTICES_COUNT = 7;
     private static final int VERTEX_RADIUS = 200;
     private static final Double PROBABILITY = 0.6;
     // preference: false - food, true - watter
     private static final boolean PREFERENCE = false; 
     //public final static Random rand = new Random();
-    public final static Random rand = new Random(15);
+    public final static Random rand = new Random(5);
     
     // publc painter index constants
     public static final int AGENT_PAINTER_INDEX = 0;
@@ -62,6 +63,7 @@ public class Model {
     private final ArrayList<Team> teams;
     private final ArrayList<Painter> painters;
     private GameMap map;
+    private EnvirometControler enviroment;
     private long gameStart;
     // private Chunk chunk;
     
@@ -71,6 +73,7 @@ public class Model {
         this.teams = new ArrayList(EXPECTED_TEAM_COUNT);
         this.painters = new ArrayList(EXPECTED_PAINTER_COUNT);
         this.map = null;
+        this.enviroment = null;
         
         this.initPainters();
         this.initGame();
@@ -206,7 +209,8 @@ public class Model {
      *               middle point on X-axis or Y-axis
      * @return randomly created obsticle sutable to placement ito map
     */
-    private static Obsticle generateObsticle(int minv, int maxv, int radv) {
+    private static Obstacle generateObsticle(int minv, int maxv, int radv) {
+        boolean q1 = false, q2 = false, q3 = false, q4 = false;
         int vertecisCount, median, x, y;
         Shape s = new Shape();
         
@@ -218,18 +222,39 @@ public class Model {
             x = Model.rand.nextInt(radv);
             y = Model.rand.nextInt(radv);
             
-            if (i >= median) {
+            if (!q1) {
+                // nothing to chage
+            }
+            else if(!q2) {
+                x = x * -1;
+            }
+            else if(!q3) {
+                x = x * -1;
+                y = y * -1;
+            }
+            else if(!q4) {
+                y = y * -1;
+            }
+            else {
+                if (i >= median) {
+                   if (Model.rand.nextBoolean()) {
+                       x = x * -1;
+                    }
+                }
                 if (Model.rand.nextBoolean()) {
-                    x = x * -1;
+                    y = y * -1;
                 }
             }
-            if (Model.rand.nextBoolean()) {
-                    y = y * -1;
-            }
+            
+            q1 = q1 || ((x > 0) && (y > 0));
+            q2 = q2 || ((x < 0) && (y > 0));
+            q3 = q3 || ((x < 0) && (y < 0));
+            q4 = q4 || ((x > 0) && (y < 0));
+            
             s.addVertex(x, y);
         }
-
-        Obsticle obs = new Obsticle();
+        
+        Obstacle obs = new Obstacle();
         obs.setNewShape(s);
         obs.setPainter(Model.getPainter(POLYGON_PAINTER_INDEX));
         return obs;
@@ -265,22 +290,6 @@ public class Model {
             }
         } // */
         
-        
-        /*
-            try {
-                // Creates agent
-                this.getEnvironmentInfraTier().getRuntimeServices().createAgent(agent_name, ai, null, architecture, null, null);
-                
-                // Adds initial beliefs
-                this.addBelief(agent_info.getName(), "home(" + Model.getWorld().getAnthill(agent_info.getTeam()).x + "," + Model.getWorld().getAnthill(agent_info.getTeam()).y + ")");
-                this.addBelief(agent_info.getName(), "update_rate(" + Model.getConfiguration().getPps() + ")");
-                this.addBelief(agent_info.getName(), "anthill(" + Model.getWorld().getTeam(team).getName() + ")");
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-        */
-        
         //*
         // prepare anthils for given teams
         for (Team team : this.teams) {
@@ -290,11 +299,20 @@ public class Model {
             team.setAnthillObject(hill);
             
             hill.setPainter(Model.getPainter(RECTANGLE_PAINTER_INDEX));
+            for(int i = 0 ; i < INITIAL_ANT_COUNT ; i++) {
+                Model.createNewAgent(team);
+            }
+            
             
             boolean added = false;
             do {
-                int x = Model.rand.nextInt(this.map.getMapWidth());
+                /* int x = Model.rand.nextInt(this.map.getMapWidth());
                 int y = Model.rand.nextInt(this.map.getMapHeight());
+                */
+                
+                int x = 100;
+                int y = 100;
+                
                 hill.setPosition(x, y);
                 added = this.map.addGameObject(hill);
             } while (!added);
@@ -305,7 +323,7 @@ public class Model {
         }  //  */    
         // create obsticles
         for(int i = 0; i < obst; i++) {
-            Obsticle obs = Model.generateObsticle(minv, maxv, radv);
+            Obstacle obs = Model.generateObsticle(minv, maxv, radv);
             boolean added = false;
             do {
                 int x = Model.rand.nextInt(this.map.getMapWidth());
@@ -355,12 +373,24 @@ public class Model {
         ag.setPainter(Model.getPainter(AGENT_PAINTER_INDEX));
         ag.setTeam(team);
         
+        if(!enviroment.addAgent(ag)) {
+            team.removeMember(ag);
+            return false;
+        }
+        
         this.agents.put(name, ag);
-        this.map.addGameObject(ag, team.getHill().getPosition());
         return true;
     }
     
     private void initGame() {
         this.gameStart = System.currentTimeMillis();
+    }
+
+    void setEnviromentalControler(EnvirometControler envitoment) {
+        this.enviroment = envitoment;
+    }
+    
+    public EnvirometControler getEnviromentalControler() {
+        return this.enviroment;
     }
 }
