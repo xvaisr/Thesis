@@ -1,15 +1,11 @@
 /**
- * BP, anthill strategy game
- * Gets position of an ant in the first argument
+ * Thesis project, BP, anthill strategy game refactored
  *
- * @author  xsimet00 Vojtech Simetka
- * @date    2013/01/05
- * @version 1
- * @file    actions.getPosition.java
+ * @author  Roman Vais, xvaisr00
+ * @date    2015/05/27
  */
 package systemactions;
 
-import Enviroment.EnvObjects.Agents.Agent;
 import Enviroment.EnvObjects.GameObject;
 import Enviroment.Model;
 import jason.JasonException;

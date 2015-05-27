@@ -1,11 +1,8 @@
 /**
- * BP, anthill strategy game
- * Returns true if the agent in first argument is weaker then the one in second argument
+ * Thesis project, BP, anthill strategy game refactored
  *
- * @author  xsimet00 Vojtech Simetka
- * @date    2013/01/05
- * @version 1
- * @file    actions.isWeaker.java
+ * @author  Roman Vais, xvaisr00
+ * @date    2015/05/27
  */
 package systemactions;
 

@@ -1,7 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Thesis project, BP, anthill strategy game refactored
+ *
+ * @author  Roman Vais, xvaisr00
+ * @date    2015/05/27
  */
 
 package Enviroment.EnvObjects;
@@ -13,10 +14,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- *
- * @author lennylinux
- */
 public class DetectableObjectPrototype extends GameObjectPrototype implements DetectableGameObject {
     
     private final HashMap <Class<? extends Emitor>, Emitor> emitors;

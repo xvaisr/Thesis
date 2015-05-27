@@ -1,7 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Thesis project, BP, anthill strategy game refactored
+ *
+ * @author  Roman Vais, xvaisr00
+ * @date    2015/05/27
  */
 
 package Enviroment.EnvObjFeatures.Senses;
@@ -16,13 +17,7 @@ import Enviroment.EnviromentalMap.MapInterface;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-/**
- *
- * @author lennylinux
- */
 public abstract class AbstractSense implements Sense {
     private SensingGameObject preceptor;
     private final ArrayList<DetectableGameObject> cache;
@@ -209,7 +204,9 @@ public abstract class AbstractSense implements Sense {
     }
     
     public ArrayList<DetectableGameObject> getCache() {
-        return (ArrayList<DetectableGameObject>) this.cache.clone();
+        synchronized (this.cache) {
+            return (ArrayList<DetectableGameObject>) this.cache.clone();
+        }
     }
     
     public ArrayList<DetectableGameObject> getDynamicMapObjects() {

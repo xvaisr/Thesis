@@ -1,14 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Thesis project, BP, anthill strategy game refactored
+ *
+ * @author  Roman Vais, xvaisr00
+ * @date    2015/05/27
  */
-
 package Enviroment.EnvObjFeatures.Senses;
 
 import Enviroment.EnvObjFeatures.DetectableGameObject;
 import Enviroment.EnvObjFeatures.Emitors.Emitor;
-import Enviroment.EnvObjFeatures.Emitors.SmellEmitor;
 import Enviroment.EnvObjFeatures.Emitors.SoundEmitor;
 import Enviroment.EnvObjFeatures.SensingGameObject;
 import Enviroment.EnviromentalMap.CollisionDetector;
@@ -17,10 +16,6 @@ import java.awt.Point;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- *
- * @author lennylinux
- */
 public class Hearing extends AbstractSense {
     private static final int AUDIBILITY_THRESHOLD = 15;
     

@@ -1,9 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Thesis project, BP, anthill strategy game refactored
+ *
+ * @author  Roman Vais, xvaisr00
+ * @date    2015/05/27
  */
-
 package Enviroment;
 
 import Enviroment.EnvObjects.Agents.Agent;
@@ -18,7 +18,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -26,9 +26,11 @@ import java.util.logging.Level;
  */
 public class EnvirometControler extends Environment {
     
+    static Logger logger = Logger.getLogger(EnvirometControler.class.getName());
+    
     private HashMap<String, AgentAction> actions;
     private List<String> architecture = new ArrayList<String>();
-
+    
     public EnvirometControler() {
     }
     
@@ -60,22 +62,25 @@ public class EnvirometControler extends Environment {
     
     @Override
     public boolean executeAction(String agent_name, Structure action) {
-        String msg = agent_name + " doing: " + action.toString();
-        this.getLogger().info(msg);
+        String msg = agent_name + " doing: " + action.getFunctor();
+        logger.info(msg);
         GameObject ag = Model.getAgentByName(agent_name);
         AgentAction ac = this.actions.get(action.getFunctor());
         if (ac != null) {
             return ac.execute(ag, action.getTerms());
         }
         
-        System.out.println("Doimplementuj / dolinkuj akci: " + action.toString());
-        return false;
+        System.err.println("Doimplementuj / dolinkuj akci: " + action.toString());
+        return true;
     }
        
     public boolean addAgent(Agent ag) {
         try {
             String ai;
-            ai = this.getClass().getResource(ag.getTeam().getAntAiPath()).toExternalForm();
+            ai = ag.getTeam().getAntAiPath();
+            System.err.println(ai);
+            ai = this.getClass().getResource(ai).toExternalForm();
+            System.err.println(ai);
             
             this.getEnvironmentInfraTier().getRuntimeServices()
                 .createAgent(ag.getName(), ai, null, this.architecture, null, null);			

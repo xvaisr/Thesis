@@ -1,7 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Thesis project, BP, anthill strategy game refactored
+ *
+ * @author  Roman Vais, xvaisr00
+ * @date    2015/05/27
  */
 
 package Enviroment.EnviromentalMap;
@@ -12,17 +13,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
-/* // for debug purposes
-   import Graphics.ViewAndDraw.MapViewDebug;
-   import java.awt.Color;
-   import Enviroment.EnvObjFeatures.DrawableGameObject;
-   import Enviroment.Model;
-*/
-
-/**
- *
- * @author lennylinux
- */
 public class CollisionDetector {
     
     public static boolean getCollide(CollidableGameObject a, CollidableGameObject b) {
@@ -35,16 +25,6 @@ public class CollisionDetector {
         if (!aBox.intersects(bBox)) {
             return false;
         }
-        
-        /* just for debug purposes * /
-        Color c = new Color(Model.rand.nextInt());
-        ((DrawableGameObject) a).setColor(c);
-        ((DrawableGameObject) b).setColor(c);
-        // */
-        
-        // Rectangle newAov = aBox.union(bBox);
-        // Point pos = MapViewDebug.mapview.getViewPosition();
-        // MapViewDebug.mapview.shiftWindow((newAov.x - pos.x), (newAov.y - pos.y));
         
         // check if for both objects is true following statement:
         // Bounding box of object contains at least one vertex of the other object

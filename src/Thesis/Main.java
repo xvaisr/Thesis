@@ -1,21 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Thesis project, BP, anthill strategy game refactored
+ *
+ * @author  Roman Vais, xvaisr00
+ * @date    2015/05/27
  */
 
 package Thesis;
 
 import Agents.Team.Team;
-import Enviroment.EnvObjects.Obstacles.Obstacle;
-import Enviroment.EnvObjects.ObjectParts.Shape;
 import Enviroment.Model;
-import GraphicInterface.MenuInterfacce;
-import GraphicInterface.UserInterface;
 import GraphicInterface.UserInterface;
 import java.awt.Color;
 import java.util.ArrayList;
-// import KeyEventFixer.KeyEventsFixer;
 
 /**
  *
@@ -36,9 +32,6 @@ public class Main {
      * @param args the command line arguments, not used
      */
     public static void main(String[] args) {
-        // KeyEventsFixer fixer = new KeyEventsFixer();
-        // fixer.install();
-
         /* 
            as first step set up tems for the game
            as second step generate map - anthils are generated during this stage
@@ -50,7 +43,7 @@ public class Main {
         
         // setup teams
         Model.addTeam(new Team(Color.red));
-      //  Model.addTeam(new Team(Color.MAGENTA));
+        Model.addTeam(new Team(Color.MAGENTA));
         
         // generate map
         Model.setNewMap(40, 30);
@@ -61,44 +54,18 @@ public class Main {
             Model.createNewAgent(team);
         }
 
-        // add aditional gameobjects to map - no longer needed
-       /* Shape s = new Shape();
-        s.addVertex(-20, -20);
-        s.addVertex(10, -30);
-        s.addVertex(60, -10);
-        s.addVertex(20, 10);
-        s.addVertex(0, 40);
-        s.addVertex(-40, 20);
-        
-        Obstacle ob = new Obstacle(400, 400);
-        ob.setNewShape(s);
-        ob.setPainter(Model.getPainter(Model.POLYGON_PAINTER_INDEX));
-        
-        Model.getCurrentMap().addGameObject(ob);
-        
-        s = new Shape();
-        s.addVertex(10, 20);
-        s.addVertex(-10, 0);
-        s.addVertex(-20, 30);
-        s.addVertex(20, -20);
-        s.addVertex(-40, 0);
-        
-        ob = new Obstacle(420, 400);
-        ob.setNewShape(s);
-        ob.setPainter(Model.getPainter(Model.POLYGON_PAINTER_INDEX));
-        
-        Model.getCurrentMap().addGameObject(ob);
+        // add aditional gameobjects to map - if required
+        /*
+          GameObject ob;
+          ob = new GameObject
+          Model.getCurrentMap().addGameObject(ob);
         */
         
         // start up user interface
         UserInterface ui = UserInterface.getInstance();
         // MenuInterfacce ui = MenuInterfacce.getInstance();
         Thread t  = new Thread(ui);
-        t.start();
- // */      
-        
-        
-     
+        t.start();       
     }
     
     public static void debug(int level, String msg) {

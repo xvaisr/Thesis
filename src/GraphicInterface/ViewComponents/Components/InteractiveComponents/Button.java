@@ -1,7 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Thesis project, BP, anthill strategy game refactored
+ *
+ * @author  Roman Vais, xvaisr00
+ * @date    2015/05/27
  */
 
 package GraphicInterface.ViewComponents.Components.InteractiveComponents;
@@ -19,10 +20,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-/**
- *
- * @author lennylinux
- */
 public class Button extends AbstractInteractiveComponent {
     private static final String DEFAUT_LABLE = "Button";
     private static final Color DEFAULT_BACKGROUN_COLOR = Color.white;

@@ -1,15 +1,11 @@
 /**
- * BP, anthill strategy game
- * Returns true if an ant finished all it's actions
+ * Thesis project, BP, anthill strategy game refactored
  *
- * @author  xsimet00 Vojtech Simetka
- * @date    2013/01/05
- * @version 1
- * @file    actions.finishedMovement.java
+ * @author  Roman Vais, xvaisr00
+ * @date    2015/05/27
  */
 package systemactions;
 
-import Enviroment.EnvObjFeatures.AgentInterface;
 import Enviroment.Model;
 import Enviroment.EnvObjects.Agents.Agent;
 import Enviroment.EnvObjects.GameObject;

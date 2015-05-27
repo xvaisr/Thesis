@@ -1,9 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Thesis project, BP, anthill strategy game refactored
+ *
+ * @author  Roman Vais, xvaisr00
+ * @date    2015/05/27
  */
-
 package Enviroment.EnvObjFeatures.Senses;
 
 import Enviroment.EnvObjFeatures.Emitors.Emitor;
@@ -11,10 +11,6 @@ import Enviroment.EnvObjFeatures.SensingGameObject;
 import java.awt.Rectangle;
 import java.util.List;
 
-/**
- *
- * @author lennylinux
- */
 public interface Sense {
     public static int NO_PRECEPT_STRENGHT = -1;
     

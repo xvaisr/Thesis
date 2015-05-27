@@ -1,11 +1,8 @@
 /**
- * BP, anthill strategy game
- * Internal action that notes agent's reasoning action
+ * Thesis project, BP, anthill strategy game refactored
  *
- * @author  xsimet00 Vojtech Simetka
- * @date    2013/05/01
- * @version 1
- * @file    actions.addReasoningAction.java
+ * @author  Roman Vais, xvaisr00
+ * @date    2015/05/27
  */
 package systemactions;
 

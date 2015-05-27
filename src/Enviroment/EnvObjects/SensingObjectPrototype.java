@@ -1,12 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Thesis project, BP, anthill strategy game refactored
+ *
+ * @author  Roman Vais, xvaisr00
+ * @date    2015/05/27
  */
-
 package Enviroment.EnvObjects;
 
-import Enviroment.EnvObjFeatures.Emitors.Emitor;
 import Enviroment.EnvObjFeatures.Senses.Sense;
 import Enviroment.EnvObjFeatures.SensingGameObject;
 import static Enviroment.EnvObjFeatures.SensingGameObject.SENSES_INITIAL_CAPACITY;
@@ -15,10 +14,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- *
- * @author lennylinux
- */
 public class SensingObjectPrototype extends GameObjectPrototype implements SensingGameObject {
     
     private final HashMap <Class<? extends Sense>, Sense> senses;

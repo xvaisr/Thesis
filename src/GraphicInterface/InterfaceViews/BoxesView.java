@@ -1,7 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Thesis project, BP, anthill strategy game refactored
+ *
+ * @author  Roman Vais, xvaisr00
+ * @date    2015/05/27
  */
 
 package GraphicInterface.InterfaceViews;
@@ -11,14 +12,8 @@ import GraphicInterface.ViewComponents.Components.DrawRectangle;
 import GraphicInterface.ViewComponents.Container;
 import GraphicInterface.ViewComponents.UiComponent;
 import java.awt.Color;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-/**
- *
- * @author lennylinux
- */
 public class BoxesView extends View {
 
     private ArrayList<DrawRectangle> rectangles;

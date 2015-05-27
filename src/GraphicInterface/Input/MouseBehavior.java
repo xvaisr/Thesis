@@ -1,9 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Thesis project, BP, anthill strategy game refactored
+ *
+ * @author  Roman Vais, xvaisr00
+ * @date    2015/05/27
  */
-
 package GraphicInterface.Input;
 
 import GraphicInterface.GUIEvents.GUIEvent;
@@ -14,10 +14,6 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.ArrayDeque;
 
-/**
- *
- * @author lennylinux
- */
 public class MouseBehavior implements MouseEventProcessor, GUIEventListener {
     private final static int minQueLenght = 20;
     
@@ -27,9 +23,6 @@ public class MouseBehavior implements MouseEventProcessor, GUIEventListener {
     private InteractiveComponent parent;
     private Point cp;
     private Point np;
-    
-    
-    
     
     private volatile int button;
     private volatile int lclickCounter;

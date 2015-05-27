@@ -1,19 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Thesis project, BP, anthill strategy game refactored
+ *
+ * @author  Roman Vais, xvaisr00
+ * @date    2015/05/27
  */
 
 package RTreeAlgorithm;
 
 import java.util.Objects;
 
-/**
- *
- * @author lennylinux
- * @param <A>
- * @param <B>
- */
 public final class Pair <A, B> {
     private final A a;
     private final B b;

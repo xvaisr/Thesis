@@ -1,7 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Thesis project, BP, anthill strategy game refactored
+ *
+ * @author  Roman Vais, xvaisr00
+ * @date    2015/05/27
  */
 
 package Enviroment.EnviromentalMap;
@@ -22,11 +23,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-
-/**
- *
- * @author lennylinux
- */
+ 
 public class GameMap implements ExtendedMapInterface, MapContainer {
     private static final int DEFAULT_EMITORMAP_COUNT = 5;
     

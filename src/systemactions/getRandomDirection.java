@@ -1,11 +1,8 @@
 /**
- * BP, anthill strategy game
- * Gets free of obstacle random location on the map
+ * Thesis project, BP, anthill strategy game refactored
  *
- * @author  xsimet00 Vojtech Simetka
- * @date    2013/01/05
- * @version 1
- * @file    actions.getRandomDirection.java
+ * @author  Roman Vais, xvaisr00
+ * @date    2015/05/27
  */
 package systemactions;
 

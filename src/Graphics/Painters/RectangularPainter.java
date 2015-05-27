@@ -1,9 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Thesis project, BP, anthill strategy game refactored
+ *
+ * @author  Roman Vais, xvaisr00
+ * @date    2015/05/27
  */
-
 package Graphics.Painters;
 
 import Enviroment.EnvObjFeatures.DrawableGameObject;
@@ -28,10 +28,6 @@ public class RectangularPainter implements Painter {
         
         ny = aov.height - r.y - r.height;       
         r.translate(0, (ny - r.y)); // shif rectangle to it's correct position
-        
-   //     g.setColor(Color.BLACK);
-   //     String s = "x: " + p.x + "\ny: " + p.y;
-   //     g.drawString(s, r.x, (r.y + r.height/2));
         
         g.setColor(obj.getColor());
         g.fillRect(r.x, r.y, r.width, r.height);

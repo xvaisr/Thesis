@@ -1,11 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Thesis project, BP, anthill strategy game refactored
+ *
+ * @author  Roman Vais, xvaisr00
+ * @date    2015/05/27
  */
 package GraphicInterface.UiCommands;
 
 /**
- * This interface imlements observ
+ * This interface imlements observer patter
  * @see UiCommand class
  * @author Roman Vais romanvais@seznam.cz
  */

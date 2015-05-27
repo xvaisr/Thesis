@@ -1,17 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Thesis project, BP, anthill strategy game refactored
+ *
+ * @author  Roman Vais, xvaisr00
+ * @date    2015/05/27
  */
 
 package Enviroment.EnvObjFeatures.Emitors;
 
 import Enviroment.EnvObjFeatures.DetectableGameObject;
-
 /**
+ * Thesis project, BP, anthill strategy game refactored
  *
- * @author lennylinux
+ * @author  Roman Vais, xvaisr00
+ * @date    2015/05/27
  */
+
 public class SmellEmitor extends AbstractEmitor {
     private static final int DEFAULT_SMELL = 0;
     private double concentration;

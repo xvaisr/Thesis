@@ -1,7 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Thesis project, BP, anthill strategy game refactored
+ *
+ * @author  Roman Vais, xvaisr00
+ * @date    2015/05/27
  */
 
 package Enviroment.EnvObjFeatures;
@@ -9,10 +10,6 @@ package Enviroment.EnvObjFeatures;
 import Agents.Team.Team;
 import Enviroment.EnvObjects.GameObject;
 
-/**
- *
- * @author lennylinux
- */
 public interface AgentInterface extends GameObject {
     public static final String DEFAULT_AGENT_NAME = "AgentSteev";
     

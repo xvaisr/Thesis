@@ -1,7 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Thesis project, BP, anthill strategy game refactored
+ *
+ * @author  Roman Vais, xvaisr00
+ * @date    2015/05/27
  */
 
 package Enviroment;
@@ -25,10 +26,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-/**
- *
- * @author lennylinux
- */
 public class Model {
     // Model must be singleton -> private instance and constructor
     private static final Model instance = new Model();
@@ -300,7 +297,8 @@ public class Model {
             
             hill.setPainter(Model.getPainter(RECTANGLE_PAINTER_INDEX));
             for(int i = 0 ; i < INITIAL_ANT_COUNT ; i++) {
-                Model.createNewAgent(team);
+                boolean succes = Model.createNewAgent(team);
+                System.err.println(succes);
             }
             
             

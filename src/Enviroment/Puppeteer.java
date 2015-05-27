@@ -1,9 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Thesis project, BP, anthill strategy game refactored
+ *
+ * @author  Roman Vais, xvaisr00
+ * @date    2015/05/27
  */
-
 package Enviroment;
 
 import Agents.Team.Team;
@@ -66,7 +66,17 @@ public class Puppeteer implements Runnable {
         synchronized(this) {
             this.running = true;
         } 
-        
+        ArrayList<Team> teamList = Model.getTeamList();
+        boolean g = Model.getInstance().getEnviromentalControler()
+                        .getEnvironmentInfraTier().isRunning();
+        System.err.println(g);
+        for (Team t : teamList) {
+            for (Agent ag : t.getMemberList()) {
+                System.err.println(ag.getName());
+                Model.getInstance().getEnviromentalControler()
+                        .getEnvironmentInfraTier().getRuntimeServices().startAgent(ag.getName());
+            }
+        }
         now = System.currentTimeMillis();
         while (run) {
             if (counter > SPEED) {
@@ -77,7 +87,7 @@ public class Puppeteer implements Runnable {
             speed = this.unifiedSpeed; // volatile - should be safe
             
             // move everyone
-            ArrayList<Team> teamList = Model.getTeamList();
+            teamList = Model.getTeamList();
             for (Team t : teamList) {
                 for (Agent ag : t.getMemberList()) {
                     LinkedList<String> percepts = new LinkedList();

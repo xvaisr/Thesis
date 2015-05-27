@@ -1,7 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Thesis project, BP, anthill strategy game refactored
+ *
+ * @author  Roman Vais, xvaisr00
+ * @date    2015/05/27
  */
 
 package GraphicInterface.InterfaceViews;
@@ -13,10 +14,6 @@ import GraphicInterface.ViewComponents.Container;
 import java.awt.Dimension;
 import java.awt.Point;
 
-/**
- *
- * @author lennylinux
- */
 public class MapView extends View {
     private SearchForDraw casher;
     private MapComponent map;

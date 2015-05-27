@@ -1,7 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Thesis project, BP, anthill strategy game refactored
+ *
+ * @author  Roman Vais, xvaisr00
+ * @date    2015/05/27
  */
 
 package Agents.Team;
@@ -19,8 +20,8 @@ public class Team {
     private final int DEFAULT_ATTAK = 5;
     private final int DEFAULT_ARMOR = 1;
     private final int DEFAULT_SPEED = 5;
-    private final String DEFAULT_HILL_AI = "";
-    private final String DEFAULT_ANT_AI = "";
+    private final String DEFAULT_HILL_AI = "../JasonCode/swarm.asl";
+    private final String DEFAULT_ANT_AI = "/res/swarm.asl";
     
     private AntHill hill;
     private final Color color;
